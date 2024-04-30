@@ -52,7 +52,8 @@ char Menu()
 
 
 int main()
-3
+{
+
     printf("Projecto-Biblioteca-Versao-Base!\n");
     //Exemplo_Hashing();
     BIBLIOTECA *Bib;
@@ -69,7 +70,10 @@ int main()
             case '4': LoadFicheiroBiblioteca(Bib); break;
             case '5': ShowBiblioteca(Bib); break;
             default:
-                printf("Opcao nao implementada\n"); break;
+                printf("Opcao nao implementada\n");
+                system("pause");
+                setbuf (stdin, 0);
+                break;
         }
 
     }while (OP != '0');
