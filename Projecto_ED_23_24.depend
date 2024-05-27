@@ -66,68 +66,73 @@
 	"Pessoa.h"
 	"Livro.h"
 
-1713296822 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\biblioteca.c
+1716844956 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\biblioteca.c
 	"Biblioteca.h"
 
-1713296822 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\biblioteca.h
+1716844638 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\biblioteca.h
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	"Livro.h"
 	"Lista.h"
 	"Hashing.h"
-
-1713296822 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.h
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-
-1713296822 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\lista.h
-	<stdio.h>
-	<stdlib.h>
 	"Pessoa.h"
 
-1713296822 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.h
+1715886184 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1713296822 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.h
+1716845614 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\lista.h
+	<stdio.h>
+	<stdlib.h>
+
+1716842842 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1716843760 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"Lista.h"
 
-1713296822 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.c
+1714500441 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.c
 	"Hashing.h"
 
-1713296822 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\lista.c
+1716843769 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\lista.c
 	"Lista.h"
 
-1713296822 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.c
+1715717656 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.c
 	"Livro.h"
 
-1713296822 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\main.c
+1716844965 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Lista.h"
+	"Hashing.h"
+	"Biblioteca.h"
+	"Pessoa.h"
+
+1716845249 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.c
 	<stdio.h>
 	<stdlib.h>
 	"Lista.h"
 	"Hashing.h"
 	"Biblioteca.h"
 
-1713296822 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.c
-	"Pessoa.h"
-
-1713301785 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.c
+1714500441 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.c
 	"Requisicao.h"
 
-1713296822 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.h
+1714500441 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"Pessoa.h"
 	"Livro.h"
 
-1713300597 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\uteis.c
+1716642342 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\uteis.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>

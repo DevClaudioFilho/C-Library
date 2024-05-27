@@ -5,30 +5,15 @@
 #include "Hashing.h"
 #include "Biblioteca.h"
 
+#include "Pessoa.h"
+
 extern int LerInteiro(char *txt);
 //-----------------------------------------
-void Exemplo_Hashing()
-{
-    HASHING *Has = CriarHashing();
-    PESSOA *X = CriarPessoa(1234, "Jose", "CAT-A");
-    AddHashing(Has, X);
-    X = CriarPessoa(567, "Pedro", "CAT-A");
-    AddHashing(Has, X);
-    X = CriarPessoa(456, "Luis", "CAT-A");
-    AddHashing(Has, X);
-    X = CriarPessoa(56, "Miguel", "CAT-B");
-    AddHashing(Has, X);
-    X = CriarPessoa(5690, "James Bond", "CAT-Z");
-    AddHashing(Has, X);
-    ShowHashing(Has);
 
-    DestruirHashing(Has);
-}
-
-char Menu()
+int Menu()
 {
+
     limparTerminal();
-
 
     printf("\n #----------------------------------------------------------------#");
     printf("\n |                      Bem Vindo ao BSoft!                       |");
@@ -44,39 +29,80 @@ char Menu()
     printf("\n | [0] Sair                                                       |");
     printf("\n #----------------------------------------------------------------#");
 
-    char op;
+    int op;
+
     printf("\n Selecione sua opcao: ");
-    op = getchar();
+    fflush(stdin);
+    scanf("%d",&op);
+
+    if(getchar()!='\n' ){
+        while ((getchar()) != '\n'); //Limpa o buffer
+        return -1;
+    };
+
     return op;
 }
 
-
 int main()
 {
+    //inicia bliblioteca
 
-    printf("Projecto-Biblioteca-Versao-Base!\n");
+    LISTA *ListaPessoa = CriarLista();
+    LISTA *ListaDistrito = CriarLista();
+    LISTA *ListaConcelho = CriarLista();
+    LISTA *ListaFreguesia = CriarLista();
+
+    LISTA *ListaLivro = CriarLista();
+
     //Exemplo_Hashing();
     BIBLIOTECA *Bib;
     Bib = CriarBiblioteca("Biblioteca-ESTGV", "log.txt");
-    char OP;
+    int OP, RPessoa;
     do
     {
+        setbuf (stdin, 0);
         OP = Menu();
+
         switch(OP)
         {
-            case '1': system("pause"); break;
-            case '2': system("pause"); break;
-            case '3': system("pause"); break;
-            case '4': LoadFicheiroBiblioteca(Bib); break;
-            case '5': ShowBiblioteca(Bib); break;
+            case 1:
+                RPessoa=PainelPessoa(ListaPessoa);
+                if(RPessoa==9){
+                    OP=0;
+                };
+                break;
+            case 2: system("pause"); break;
+            case 3: system("pause"); break;
+            case 4: LoadFicheiroBiblioteca(Bib); break;
+            case 5: ShowBiblioteca(Bib); break;
+            case 0: break;
             default:
-                printf("Opcao nao implementada\n");
+                if(OP == -1){
+                    printf("Tente inserir um numero =P \n");
+                }
+                else{
+                    printf("Opcao %d e invalida\n",OP);
+                }
+                fflush(stdin);
                 system("pause");
-                setbuf (stdin, 0);
+                fflush(stdin);
+
                 break;
         }
 
-    }while (OP != '0');
+    }while (OP != 0);
+
+    DestruirLista(ListaPessoa);
+
+    DestruirLista(ListaDistrito);
+    DestruirLista(ListaConcelho);
+    DestruirLista(ListaFreguesia);
+
+    DestruirLista(ListaLivro);
+
     DestruirBiblioteca(Bib);
+
+    limparTerminal();
+    printf("Obrigado por utilizar o BSoft, volte logo\n");
     return EXIT_SUCCESS; // ou EXIT_FAILURE
 }

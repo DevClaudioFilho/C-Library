@@ -8,6 +8,8 @@
 #include "Livro.h"
 #include "Lista.h"
 #include "Hashing.h"
+#include "Pessoa.h"
+
 typedef struct
 {
     char *NOME;
@@ -27,6 +29,6 @@ int RemoverLivroBiblioteca(BIBLIOTECA *B, int isbn);
 LIVRO *LivroMaisRequisitadoBiblioteca(BIBLIOTECA *B);
 char *ApelidoMaisComum(BIBLIOTECA *B);
 char *AreaMaisComum(BIBLIOTECA *B);
-int AddRequisitante(BIBLIOTECA *B, PESSOA *X);
+int AddRequisitante(BIBLIOTECA *B, void *X);
 PESSOA *PesquisarRequisitante(BIBLIOTECA *B, int cod);
 #endif // BIBLIOTECA_H_INCLUDED

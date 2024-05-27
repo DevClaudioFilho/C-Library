@@ -16,8 +16,7 @@ LISTA *CriarLista()
     return L;
 }
 
-//--------------------------------------------------
-void AddInicio(LISTA *L, PESSOA *X)
+void AddLista(LISTA *L, void *X)
 {
     if (!L) return;
     NO *aux = (NO *)malloc(sizeof(NO));
@@ -27,20 +26,62 @@ void AddInicio(LISTA *L, PESSOA *X)
     L->NEL++;
 }
 
-//--------------------------------------------------
-void ShowLista(LISTA *L)
+void ShowLista(LISTA *L, void (*f)(void *))
 {
     if (!L) return;
-    //printf("NEL = %d\n", L->NEL);
+    if (!L->Inicio) return;
     NO *P = L->Inicio;
-    while (P != NULL)
+    while (P)
     {
-        MostrarPessoa(P->Info);
+        f(P->Info);
         P = P->Prox;
     }
 }
 
-//--------------------------------------------------
+void *PesquisarLista(LISTA *L, int (*fcomp)(void *, void *), void *palavra)
+{
+    if (!L) return NULL;
+    NO *P = L->Inicio;
+    while (P)
+    {
+        if (fcomp(P->Info, palavra) == 1)
+            return P->Info;
+        P = P->Prox;
+    }
+    return NULL;
+}
+
+void RemoverLista(LISTA *L, void *VInfo)
+{
+    NO *atual = L->Inicio;
+    NO *anterior = NULL;
+
+    while (atual != NULL)
+    {
+        if (atual->Info == VInfo)
+        {
+            if (anterior == NULL)
+            {
+                L->Inicio = atual->Prox;
+            }
+            else
+            {
+                anterior->Prox = atual->Prox;
+            }
+
+            free(atual);
+            L->NEL--;
+            return;
+        }
+
+        anterior = atual;
+        atual = atual->Prox;
+    }
+
+    printf("Valor não encontrado na lista.\n");
+}
+
+
 void DestruirLista(LISTA *L)
 {
     //printf("Implementar <%s>\n", __FUNCTION__);
@@ -57,27 +98,10 @@ void DestruirLista(LISTA *L)
     free(L);
 }
 
-//--------------------------------------------------
-PESSOA *PesquisarLista(LISTA *L, char *_nome)
-{
-    printf("Implementar <%s>\n", __FUNCTION__);
-    if (L == NULL) return NULL;
-    NO *P = L->Inicio;
-    while (P)
-    {
-        if (stricmp(P->Info->NOME, _nome) == 0)
-            return P->Info;
-        P = P->Prox;
-    }
-    return NULL;
-}
 
-//--------------------------------------------------
 int SizeLista(LISTA *L)
 {
     if (!L) return -1;
     return L->NEL;
 }
-//--------------------------------------------------
-//--------------------------------------------------
-//--------------------------------------------------
+

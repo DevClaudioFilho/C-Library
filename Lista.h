@@ -2,11 +2,11 @@
 #define LISTA_H_INCLUDED
 #include <stdio.h>
 #include <stdlib.h>
-#include "Pessoa.h"
+
 
 typedef struct no
 {
-    PESSOA    *Info;
+    void    *Info;
     struct no *Prox;
 }NO;
 
@@ -16,22 +16,14 @@ typedef struct
     NO *Inicio;
 }LISTA;
 
-//--------------------------------------------------
 LISTA *CriarLista();
-//--------------------------------------------------
-void AddInicio(LISTA *L, PESSOA *X);
-//--------------------------------------------------
-void ShowLista(LISTA *L);
-//--------------------------------------------------
+
+void AddLista(LISTA *L, void *X);
+void ShowLista(LISTA *L, void (*f)(void *));
+void *PesquisarLista(LISTA *L, int (*fcomp)(void *, void *), void *palavra);
+void RemoverLista(LISTA *L, void *VInfo);
 void DestruirLista(LISTA *L);
-//--------------------------------------------------
-PESSOA *PesquisarLista(LISTA *L, char *_nome);
-//--------------------------------------------------
 int SizeLista(LISTA *L);
-//--------------------------------------------------
-//--------------------------------------------------
-//--------------------------------------------------
-//--------------------------------------------------
-//--------------------------------------------------
 
 #endif // LISTA_H_INCLUDED
+
