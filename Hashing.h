@@ -7,7 +7,7 @@
 
 typedef struct no_chave
 {
-    char *KEY; // Assim nao temos tamanho fixo!, Bem melhor!, mas depois será necessário fazer o free!
+    char *KEY;
     LISTA *DADOS;
     struct no_chave *Prox;
 }NO_CHAVE;
@@ -22,20 +22,12 @@ typedef struct
 {
     LISTA_CHAVES *LChaves;
 }HASHING;
-//--------------------------------------------------------
-//--------------------------------------------------------
-//--------------------------------------------------------
+
 HASHING *CriarHashing();
-//--------------------------------------------------------
 void DestruirHashing(HASHING *H);
-//--------------------------------------------------------
-void AddHashing(HASHING *H, void *P);
-//--------------------------------------------------------
-void ShowHashing(HASHING *H);
-//--------------------------------------------------------
-NO_CHAVE *FuncaoHashing(HASHING *H, void *X);
-//--------------------------------------------------------
-//--------------------------------------------------------
-//--------------------------------------------------------
+void AddHashing(HASHING *H, void *P,void *NChave, char *type);
+NO_CHAVE *FuncaoHashing(HASHING *H, void *X, void *NChave,char *type);
+void ShowHashing(HASHING *H,void (*f)(void *),char *type);
+
 
 #endif // HASHING_H_INCLUDED

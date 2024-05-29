@@ -51,12 +51,25 @@ int main()
     LISTA *ListaDistrito = CriarLista();
     LISTA *ListaConcelho = CriarLista();
     LISTA *ListaFreguesia = CriarLista();
-
     LISTA *ListaLivro = CriarLista();
 
-    //Exemplo_Hashing();
+
+    HASHING *Has = CriarHashing();
+    PESSOA *X = CriarPessoa(1234, "Jose", "CAT-A");
+    AddHashing(Has, X,X->ID,"int");
+
+    X = CriarPessoa(1235, "ZEZINHO", "CAT-B");
+    AddHashing(Has, X,X->ID,"int");
+
+    X = CriarPessoa(1236, "ZEZINHO2.0", "CAT-A");
+    AddHashing(Has, X,X->ID,"int");
+
+    ShowHashing(Has,MostrarPessoa,"int");
+
     BIBLIOTECA *Bib;
     Bib = CriarBiblioteca("Biblioteca-ESTGV", "log.txt");
+
+    system("pause");
     int OP, RPessoa;
     do
     {

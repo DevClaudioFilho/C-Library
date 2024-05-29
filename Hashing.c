@@ -9,25 +9,33 @@ LISTA_CHAVES *CriarListaCHAVES()
     return L;
 }
 
-//--------------------------------------------------
-NO_CHAVE *AddCHAVE(LISTA_CHAVES *L, char *key)
+NO_CHAVE *AddCHAVE(LISTA_CHAVES *L, void *key, char *type)
 {
     if (!L) return NULL;
+
     NO_CHAVE *aux = (NO_CHAVE *)malloc(sizeof(NO_CHAVE));
-    aux->KEY = (char *)malloc((strlen(key) + 1) * sizeof(char));
-    strcpy(aux->KEY, key);
+    if(stricmp(type, "char") == 0){
+        aux->KEY = (char *)malloc((strlen(key) + 1) * sizeof(char));
+        strcpy(aux->KEY, key);
+    }
+    else{
+       aux->KEY = key;
+    };
+
     aux->DADOS = CriarLista();
     aux->Prox = L->Inicio;
     L->Inicio = aux;
     L->NEL++;
     return aux;
 }
+
 HASHING *CriarHashing()
 {
     HASHING *Has = (HASHING *)malloc(sizeof(HASHING));
     Has->LChaves = CriarListaCHAVES();
     return Has;
 }
+
 void DestruirHashing(HASHING *H)
 {
     if (!H) return;
@@ -43,31 +51,21 @@ void DestruirHashing(HASHING *H)
     }
     free(H);
 }
-void AddHashing(HASHING *H, void *P)
+
+void AddHashing(HASHING *H, void *P,void *NChave, char *type)
 {
     if (!H) return;
     if (!H->LChaves) return;
-    NO_CHAVE *Key_colocar = FuncaoHashing(H, P);
+    NO_CHAVE *Key_colocar = FuncaoHashing(H, P ,NChave,type);
     if (!Key_colocar)
     {
-        Key_colocar = AddCHAVE(H->LChaves, P->CATEGORIA);
+        printf("ADD NEW KEY\n");
+        Key_colocar = AddCHAVE(H->LChaves, NChave,type);
     }
-    AddInicio(Key_colocar->DADOS, P);
+    AddLista(Key_colocar->DADOS, P);
 }
 
-void ShowHashing(HASHING *H)
-{
-    if (!H) return;
-    if (!H->LChaves) return;
-    NO_CHAVE *P = H->LChaves->Inicio;
-    while (P)
-    {
-        printf("Key: [%s]\n", P->KEY);
-        ShowLista(P->DADOS);
-        P = P->Prox;
-    }
-}
-NO_CHAVE *FuncaoHashing(HASHING *H, PESSOA *X)
+NO_CHAVE *FuncaoHashing(HASHING *H, void *X,void *NChave,char *type)
 {
     if (!H) return NULL;
     if (!H->LChaves) return NULL;
@@ -75,9 +73,39 @@ NO_CHAVE *FuncaoHashing(HASHING *H, PESSOA *X)
     NO_CHAVE *P = H->LChaves->Inicio;
     while (P)
     {
-        if (stricmp(P->KEY, X->CATEGORIA) == 0)
-            return P;
+        if(stricmp(type, "char") == 0){
+            if (stricmp(P->KEY, NChave) == 0){
+                return P;
+            }
+        }
+
+        else{
+            if (P->KEY== NChave){
+                return P;
+            }
+        }
         P = P->Prox;
     }
     return NULL;
+}
+
+void ShowHashing(HASHING *H,void (*f)(void *),char *type)
+{
+    if (!H) return;
+    if (!H->LChaves) return;
+    NO_CHAVE *P = H->LChaves->Inicio;
+
+    while (P)
+    {
+        if(stricmp(type, "char") == 0){
+            printf("CAT --> [%s]\n", P->KEY);
+        }
+        else{
+           printf("CAT --> [%d]\n", P->KEY);
+        };
+
+        ShowLista(P->DADOS,f);
+        P = P->Prox;
+    }
+    printf("DEU BOM");
 }

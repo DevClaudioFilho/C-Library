@@ -133,7 +133,6 @@ char PainelPessoa(LISTA *L_PESS){
                 break;
             }
 
-
             case 3: {
                 ShowLista(L_PESS,MostrarPessoa);
                 system("pause");
@@ -184,7 +183,6 @@ PESSOA *CriarPessoa(int _id, char *_nome, char *_categoria)
     P->CATEGORIA = (char *)malloc((strlen(_categoria) + 1)*sizeof(char));
     strcpy(P->CATEGORIA, _categoria);
     P->ID = _id;
-    printf("\n\n%d\n\n",_id);
     return P;
 }
 
