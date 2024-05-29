@@ -8,12 +8,14 @@
 
 typedef struct
 {
-    char *NOME;
-    int ID;
+    int ISBN;
+    char *TITULO;
+    char *AUTOR;
     char *AREA;
+    int ANO_PLUBLICACAO;
 }LIVRO;
 
-LIVRO *CriarLivro(int _id, char *_nome, char *_area);
+LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor, int _ano_pub );
 void MostrarLivro(LIVRO *P);
 void DestruirLivro(LIVRO *P);
 

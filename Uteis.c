@@ -23,7 +23,6 @@ int LerInteiro(char *txt)
     return x;
 }
 
-
 #if defined(_WIN32) || defined(_WIN64)
     const char* OS = "Windows";
 #else

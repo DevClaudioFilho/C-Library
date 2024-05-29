@@ -43,7 +43,7 @@ void DestruirHashing(HASHING *H)
     }
     free(H);
 }
-void AddHashing(HASHING *H, PESSOA *P)
+void AddHashing(HASHING *H, void *P)
 {
     if (!H) return;
     if (!H->LChaves) return;

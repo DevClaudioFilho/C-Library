@@ -17,7 +17,7 @@ BIBLIOTECA *CriarBiblioteca(char *_nome, char *_logs)
     Bib->NOME = (char *)malloc((strlen(_nome) + 1) * sizeof(char));
     strcpy(Bib->NOME, _nome);
     strcpy(Bib->FICHEIRO_LOGS, _logs);
-    Bib->HLivros = CriarHashing();
+    //Bib->HLivros = CriarHashing();
     //Bib->LRequisicoes = CriarListaRequisicoes();
     //Bib->LRequisitantes = CriarListaPessoas();
     return Bib;
@@ -37,7 +37,7 @@ void ShowBiblioteca(BIBLIOTECA *B)
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
     printf("NOME BIBLIOTECA = [%s]\n", B->NOME);
     // Vosso Codigo.....
-    ShowHashing(B->HLivros);
+    //ShowHashing(B->HLivros);
 
     fclose(F_Logs);
 }
@@ -59,18 +59,6 @@ int LoadFicheiroBiblioteca(BIBLIOTECA *B)
     FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
     time_t now = time(NULL) ;
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
-
-    // Vosso Codigo.....
-    PESSOA *X = CriarPessoa(1234, "Jose", "CAT-A");
-    AddHashing(B->HLivros, X);
-    X = CriarPessoa(567, "Pedro", "CAT-A");
-    AddHashing(B->HLivros, X);
-    X = CriarPessoa(456, "Luis", "CAT-A");
-    AddHashing(B->HLivros, X);
-    X = CriarPessoa(56, "Miguel", "CAT-B");
-    AddHashing(B->HLivros, X);
-    X = CriarPessoa(5690, "James Bond", "CAT-Z");
-    AddHashing(B->HLivros, X);
 
     fclose(F_Logs);
     return EXIT_SUCCESS;
@@ -130,7 +118,7 @@ char *AreaMaisComum(BIBLIOTECA *B)
     fclose(F_Logs);
     return NULL;
 }
-int AddRequisitante(BIBLIOTECA *B, PESSOA *X)
+int AddRequisitante(BIBLIOTECA *B, void *X)
 {
     FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
     time_t now = time(NULL) ;
