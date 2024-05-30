@@ -7,7 +7,7 @@
 
 typedef struct no_chave
 {
-    char *KEY;
+    void *KEY;
     LISTA *DADOS;
     struct no_chave *Prox;
 }NO_CHAVE;

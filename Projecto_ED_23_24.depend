@@ -78,7 +78,7 @@
 	"Hashing.h"
 	"Pessoa.h"
 
-1715886184 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.h
+1717096539 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -87,40 +87,44 @@
 	<stdio.h>
 	<stdlib.h>
 
-1716842842 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.h
+1717080931 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	"Data.h"
 
-1716932242 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.h
+1717095858 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"Lista.h"
 
-1716932264 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.c
+1717097283 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.c
 	"Hashing.h"
 
 1716845595 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\lista.c
 	"Lista.h"
 
-1715717656 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.c
+1717097229 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.c
 	"Livro.h"
+	"Hashing.h"
 
-1716932340 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\main.c
+1717093889 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\main.c
 	<stdio.h>
 	<stdlib.h>
+	"Data.h"
 	"Lista.h"
 	"Hashing.h"
 	"Biblioteca.h"
 	"Pessoa.h"
 
-1716930639 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.c
+1717091835 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.c
 	<stdio.h>
 	<stdlib.h>
 	"Lista.h"
 	"Hashing.h"
 	"Biblioteca.h"
+	"Data.h"
 
 1714500441 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.c
 	"Requisicao.h"
@@ -137,4 +141,16 @@
 	<stdlib.h>
 	<math.h>
 	<time.h>
+
+1717081852 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\data.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1717088466 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\data.c
+	<stdio.h>
+	<stdlib.h>
+	"Lista.h"
+	"Hashing.h"
+	"Biblioteca.h"
 

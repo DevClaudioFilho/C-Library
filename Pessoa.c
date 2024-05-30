@@ -4,6 +4,7 @@
 #include "Lista.h"
 #include "Hashing.h"
 #include "Biblioteca.h"
+#include "Data.h"
 
 /** \brief Permite Alocar e inicializar uma estrutura Pessoa
  *
@@ -46,44 +47,6 @@ int MenuPessoas()
     return OPPessoa;
 }
 
-int verificarID(int ID_Pessoa){
-    int ultimoDigito = ID_Pessoa%10;
-    int penultimoDigito = (ID_Pessoa / 10) % 10;
-
-    if(ultimoDigito+penultimoDigito==10){
-        return 1;
-    }
-    else{
-        return 0;
-    };
-}
-
-int gerarID(){
-    int c,tmpNum;
-    char temp_id[8],tmpChar;
-
-    for(c=0; c<=7; c++){
-        if(c<6){
-            tmpNum = Aleatorio(0,9);
-            tmpChar = '0' + tmpNum;
-            temp_id[c] = tmpChar;
-        }
-        if(c==6){
-            tmpNum = Aleatorio(1,9);
-            tmpChar = '0' + tmpNum;
-            temp_id[c] = tmpChar;
-        }
-        if(c>6){
-            int validator= temp_id[c-1] - '0';
-            tmpNum = 10-validator;
-            tmpChar = '0' + tmpNum;
-            temp_id[c] = tmpChar;
-        }
-    }
-    int INT_ID=atoi(temp_id);
-    return INT_ID;
-}
-
 char PainelPessoa(LISTA *L_PESS){
     int OPPessoa;
 
@@ -93,27 +56,42 @@ char PainelPessoa(LISTA *L_PESS){
         switch(OPPessoa)
         {
             case 1:{
-                int p_id,p_Id;
-                char p_nome[50],p_categoria[50];
+                int p_Id,p_idfreguesia,p_dia,p_mes,p_ano;
+                char p_nome[50];
+
+                p_Id = gerarID();
+                int Id_valido = verificarID(p_Id);
+                printf("Id:%d\n",p_Id);
 
                 printf("Nome: ");
                 scanf("%s",p_nome);
                 while ((getchar()) != '\n');
 
-                printf("Categoria: ");
-                scanf("%s",p_categoria);
-                while ((getchar()) != '\n');
+                printf("Freguesia: ");
+                scanf("%d",&p_idfreguesia);
 
-                p_Id = gerarID();
 
-                int valido = verificarID(p_Id);
+                printf("Nascimento: \n");
+                printf("\tDia: ");
+                scanf("%d",&p_dia);
+                printf("\tMes: ");
+                scanf("%d",&p_mes);
+                printf("\tAno: ");
+                scanf("%d",&p_ano);
 
-                if( valido == 1 ){
-                    printf("id:%d/n",p_Id);
-                    PESSOA *novaPessoa = CriarPessoa(p_Id, p_nome, p_categoria);
+                DATA *D=CriarData(p_dia,p_mes,p_ano);
+                int D_valida=ValidarData(*D);
+
+                printf("ID VALIDO: %d\n",Id_valido);
+                printf("D VALIDO: %d\n",D_valida);
+                printf("teste");
+                if( Id_valido == 1 && D_valida==1){
+                    PESSOA *novaPessoa = CriarPessoa(p_Id, p_nome,D,p_idfreguesia);
                     AddLista(L_PESS, novaPessoa);
                 }
-
+                else{
+                    printf("Ha algo errado no usuario\n");
+                };
                 system("pause");
                 setbuf (stdin, 0);
                 break;
@@ -175,20 +153,62 @@ char PainelPessoa(LISTA *L_PESS){
     return OPPessoa;
 }
 
-PESSOA *CriarPessoa(int _id, char *_nome, char *_categoria)
+int verificarID(int ID_Pessoa){
+    int c,tmpNum,resto;
+    char temp_id[8];
+    int tmpSum=0;
+
+    sprintf(temp_id, "%d", ID_Pessoa);
+
+    printf("INT ID_Pessoa: %d , temp_id:%s\n",ID_Pessoa,temp_id);
+    for(c=0; c<=8; c++){
+        tmpNum=temp_id[c] - '0';
+        tmpSum += tmpNum;
+        printf("tmpSum: %d , tmpNum:%d\n",tmpSum,tmpNum);
+    }
+    resto=tmpSum%10;
+    if(resto==0){
+        return 1;
+    }
+    else{
+        return 0;
+    };
+}
+
+int gerarID(){
+    int c,tmpNum,resto;
+    char temp_id[8],tmpChar;
+
+    int tmpSum=0;
+    for(c=0; c<=7; c++){
+            tmpNum = rand()%10;//Aleatorio(0,9);
+            tmpSum += tmpNum;
+            tmpChar = '0' + tmpNum;
+            temp_id[c] = tmpChar;
+    }
+    resto=tmpSum%10;
+    temp_id[8]='0'+(10-resto);
+
+    int INT_ID=atoi(temp_id);
+    return INT_ID;
+}
+
+PESSOA *CriarPessoa(int _id, char *_nome, DATA *_nascimento, int _idfreguesia)
 {
     PESSOA *P = (PESSOA *)malloc(sizeof(PESSOA));
+    P->ID = _id;
     P->NOME = (char *)malloc((strlen(_nome) + 1)*sizeof(char));
     strcpy(P->NOME, _nome);
-    P->CATEGORIA = (char *)malloc((strlen(_categoria) + 1)*sizeof(char));
-    strcpy(P->CATEGORIA, _categoria);
-    P->ID = _id;
+    P->NASCIMENTO = _nascimento;
+    P->ID_FREGUESIA = _idfreguesia;
+
     return P;
 }
 
 void MostrarPessoa(PESSOA *P)
 {
-    printf("\tPESSOA: ID: %d [%s] [%s]\n", P->ID, P->NOME, P->CATEGORIA);
+    printf("\tPESSOA: [%d] [%s] [%d]", P->ID, P->NOME, P->ID_FREGUESIA);
+    MostrarData(P->NASCIMENTO);
 }
 
 int PesquisarPessoa(PESSOA *P, char *palavra )
@@ -204,8 +224,11 @@ int PesquisarPessoa(PESSOA *P, char *palavra )
 
 void DestruirPessoa(PESSOA *P)
 {
+    free (P->ID);
     free (P->NOME);
-    free (P->CATEGORIA);
+    DestruirData(P->NASCIMENTO);
+    free (P->ID_FREGUESIA);
+
     free (P);
 }
 

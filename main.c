@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "Data.h"
 #include "Lista.h"
 #include "Hashing.h"
 #include "Biblioteca.h"
-
 #include "Pessoa.h"
 
 extern int LerInteiro(char *txt);
@@ -54,23 +54,9 @@ int main()
     LISTA *ListaLivro = CriarLista();
 
 
-    HASHING *Has = CriarHashing();
-    PESSOA *X = CriarPessoa(1234, "Jose", "CAT-A");
-    AddHashing(Has, X,X->ID,"int");
+    HASHING *HasLivros = CriarHashing();
 
-    X = CriarPessoa(1235, "ZEZINHO", "CAT-B");
-    AddHashing(Has, X,X->ID,"int");
-
-    X = CriarPessoa(1236, "ZEZINHO2.0", "CAT-A");
-    AddHashing(Has, X,X->ID,"int");
-
-    ShowHashing(Has,MostrarPessoa,"int");
-
-    BIBLIOTECA *Bib;
-    Bib = CriarBiblioteca("Biblioteca-ESTGV", "log.txt");
-
-    system("pause");
-    int OP, RPessoa;
+    int OP, RPessoa,RLivro;
     do
     {
         setbuf (stdin, 0);
@@ -84,10 +70,15 @@ int main()
                     OP=0;
                 };
                 break;
-            case 2: system("pause"); break;
+
+            case 2:
+                RLivro=PainelLivro(HasLivros);
+                if(RLivro==9){
+                    OP=0;
+                };
+                break;
+
             case 3: system("pause"); break;
-            case 4: LoadFicheiroBiblioteca(Bib); break;
-            case 5: ShowBiblioteca(Bib); break;
             case 0: break;
             default:
                 if(OP == -1){
@@ -113,7 +104,6 @@ int main()
 
     DestruirLista(ListaLivro);
 
-    DestruirBiblioteca(Bib);
 
     limparTerminal();
     printf("Obrigado por utilizar o BSoft, volte logo\n");

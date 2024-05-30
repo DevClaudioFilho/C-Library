@@ -59,7 +59,6 @@ void AddHashing(HASHING *H, void *P,void *NChave, char *type)
     NO_CHAVE *Key_colocar = FuncaoHashing(H, P ,NChave,type);
     if (!Key_colocar)
     {
-        printf("ADD NEW KEY\n");
         Key_colocar = AddCHAVE(H->LChaves, NChave,type);
     }
     AddLista(Key_colocar->DADOS, P);
@@ -107,5 +106,23 @@ void ShowHashing(HASHING *H,void (*f)(void *),char *type)
         ShowLista(P->DADOS,f);
         P = P->Prox;
     }
-    printf("DEU BOM");
+}
+
+void *PesquisarHashing(HASHING *H,void (*f)(void *),void *word)
+{
+    if (!H) return;
+    if (!H->LChaves) return;
+    NO_CHAVE *L = H->LChaves->Inicio;
+
+    void *T;
+    while (L)
+    {
+        T=PesquisarLista(L->DADOS,f,word);
+        if(T!=NULL){
+            return T;
+        }
+        L = L->Prox;
+    }
+
+    return NULL;
 }
