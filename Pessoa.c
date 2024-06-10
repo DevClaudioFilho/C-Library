@@ -59,32 +59,36 @@ char PainelPessoa(LISTA *L_PESS){
                 int p_Id,p_idfreguesia,p_dia,p_mes,p_ano;
                 char p_nome[50];
 
-                p_Id = gerarID();
-                int Id_valido = verificarID(p_Id);
+                int Id_valido;
+                do{
+                    p_Id = gerarID();
+                    Id_valido = verificarID(p_Id);
+                }
+                while(Id_valido!=1);
                 printf("Id:%d\n",p_Id);
 
                 printf("Nome: ");
-                scanf("%s",p_nome);
-                while ((getchar()) != '\n');
+                scanf("%99[^\n]", p_nome);
+                while (getchar() != '\n');
 
                 printf("Freguesia: ");
                 scanf("%d",&p_idfreguesia);
+                while (getchar() != '\n');
 
 
                 printf("Nascimento: \n");
                 printf("\tDia: ");
                 scanf("%d",&p_dia);
+
                 printf("\tMes: ");
                 scanf("%d",&p_mes);
+
                 printf("\tAno: ");
                 scanf("%d",&p_ano);
 
                 DATA *D=CriarData(p_dia,p_mes,p_ano);
                 int D_valida=ValidarData(*D);
 
-                printf("ID VALIDO: %d\n",Id_valido);
-                printf("D VALIDO: %d\n",D_valida);
-                printf("teste");
                 if( Id_valido == 1 && D_valida==1){
                     PESSOA *novaPessoa = CriarPessoa(p_Id, p_nome,D,p_idfreguesia);
                     AddLista(L_PESS, novaPessoa);
@@ -112,6 +116,14 @@ char PainelPessoa(LISTA *L_PESS){
             }
 
             case 3: {
+                int OrdLP;
+                printf("Como que deseja ordenar? \n ");
+                printf("[1]  Por nascimento\n ");
+                printf("[2]  Ordem alfabetica\n ");
+                printf("[3]  Por freguesia\n ");
+                scanf("%d",&OrdLP);
+
+                bubbleSort(L_PESS,OrdenarPessoas);
                 ShowLista(L_PESS,MostrarPessoa);
                 system("pause");
                 break;
@@ -160,11 +172,9 @@ int verificarID(int ID_Pessoa){
 
     sprintf(temp_id, "%d", ID_Pessoa);
 
-    printf("INT ID_Pessoa: %d , temp_id:%s\n",ID_Pessoa,temp_id);
     for(c=0; c<=8; c++){
         tmpNum=temp_id[c] - '0';
         tmpSum += tmpNum;
-        printf("tmpSum: %d , tmpNum:%d\n",tmpSum,tmpNum);
     }
     resto=tmpSum%10;
     if(resto==0){
@@ -213,7 +223,7 @@ void MostrarPessoa(PESSOA *P)
 
 int PesquisarPessoa(PESSOA *P, char *palavra )
 {
-    if(stricmp(P->NOME, palavra) == 0)
+    if(strstr(P->NOME, palavra))
     {
         return 1;
     }
@@ -232,3 +242,50 @@ void DestruirPessoa(PESSOA *P)
     free (P);
 }
 
+
+int OrdenarPessoas(PESSOA *a, PESSOA *b,int sw)//1 = TROCA COM A PROXIMA
+{
+    //Por data de nascimento mais velho para o mais novo
+    if(sw == 1){
+
+        if(a->NASCIMENTO->ANO > b->NASCIMENTO->ANO){
+            return 1;
+        }
+        else if(a->NASCIMENTO->ANO == b->NASCIMENTO->ANO){
+            if(a->NASCIMENTO->MES > b->NASCIMENTO->MES){
+                return 1;
+            }
+            else if(a->NASCIMENTO->MES == b->NASCIMENTO->MES){
+                if(a->NASCIMENTO->DIA < b->NASCIMENTO->DIA){
+                    return 1;
+                }
+                else{
+                    return 0;
+                }
+            }
+            else{
+                return 0;
+            }
+        }
+        else{
+            return 0;
+        }
+    }
+
+    //Por ordem alfabetica
+    else if(sw == 2){
+        if( strcmp(a->NOME,b->NOME)< 0){
+            return 1;
+        }
+        return 0;
+    }
+
+    //Por freguesia
+    if(sw == 3){
+        if(a->ID_FREGUESIA > b->ID_FREGUESIA){
+            return 1;
+        }
+        return 0;
+    }
+
+}

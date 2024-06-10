@@ -92,15 +92,16 @@ void ShowHashing(HASHING *H,void (*f)(void *),char *type)
 {
     if (!H) return;
     if (!H->LChaves) return;
+
     NO_CHAVE *P = H->LChaves->Inicio;
 
     while (P)
     {
         if(stricmp(type, "char") == 0){
-            printf("CAT --> [%s]\n", P->KEY);
+            printf("CAT --> [%s] [%d]\n", P->KEY,P->DADOS->NEL);
         }
         else{
-           printf("CAT --> [%d]\n", P->KEY);
+           printf("CAT --> [%d] [%d]\n", P->KEY,P->DADOS->NEL);
         };
 
         ShowLista(P->DADOS,f);
@@ -126,3 +127,4 @@ void *PesquisarHashing(HASHING *H,void (*f)(void *),void *word)
 
     return NULL;
 }
+

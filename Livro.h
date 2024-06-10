@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "Hashing.h"
 
 typedef struct
 {
@@ -19,6 +20,7 @@ LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area ,int _ano_p
 void MostrarLivro(LIVRO *L);
 void DestruirLivro(LIVRO *L);
 int PesquisarLivro(LIVRO *L, int ISBN);
+int OrdenarLivros(LIVRO *a, LIVRO *b,int sw);
 
 
 #endif // LIVRO_H_INCLUDED

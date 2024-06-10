@@ -22,7 +22,6 @@ int MenuLivro()
     int OPLivro;
 
     printf("\n Selecione sua opcao: ");
-    fflush(stdin);
     scanf("%d",&OPLivro);
 
     if(getchar()!='\n' ){
@@ -47,18 +46,19 @@ char PainelLivro(HASHING *H_LIVRO){
 
                 printf("ISBN: ");
                 scanf("%d",&l_isbn);
+                while (getchar() != '\n');
 
                 printf("Titulo: ");
-                scanf("%s",l_titulo);
-                while ((getchar()) != '\n');
+                scanf("%99[^\n]", l_titulo);
+                while (getchar() != '\n');
 
                 printf("Autor: ");
-                scanf("%s",l_autor);
-                while ((getchar()) != '\n');
+                scanf("%99[^\n]", l_autor);
+                while (getchar() != '\n');
 
                 printf("Area: ");
-                scanf("%s",l_area);
-                while ((getchar()) != '\n');
+                scanf("%99[^\n]", l_area);
+                while (getchar() != '\n');
 
                 printf("Ano publicacao: ");
                 scanf("%d",&l_publicacao);
@@ -84,8 +84,6 @@ char PainelLivro(HASHING *H_LIVRO){
                 RemoverLista(H_LIVRO->LChaves->Inicio->DADOS, LIV);
                 system("pause");
                 break;
-                system("pause");
-                break;
             }
 
             case 3: {
@@ -109,6 +107,13 @@ char PainelLivro(HASHING *H_LIVRO){
                 system("pause");
                 break;
             }
+
+            case 5: {
+                LivroMaisRecente(H_LIVRO);
+                system("pause");
+                break;
+            }
+
             case 0: break;
             case 9: break;
 
@@ -119,9 +124,7 @@ char PainelLivro(HASHING *H_LIVRO){
                 else{
                     printf("Opcao %d e invalida\n",OPLivro);
                 }
-                fflush(stdin);
                 system("pause");
-                fflush(stdin);
 
                 break;
         }
@@ -146,7 +149,7 @@ LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area, int _ano_p
 
 void MostrarLivro(LIVRO *P)
 {
-    printf("\LIVRO: %d [%s] [%s] [%s] [%d]\n", P->ISBN, P->TITULO,P->AUTOR,P->AREA ,P->ANO_PLUBLICACAO);
+    printf("\tLIVRO: %d [%s] [%s] [%s] [%d]\n", P->ISBN, P->TITULO,P->AUTOR,P->AREA ,P->ANO_PLUBLICACAO);
 }
 
 void DestruirLivro(LIVRO *P)
@@ -165,4 +168,48 @@ int PesquisarLivro(LIVRO *L, int _isbn )
 
     else
         return 0;
+}
+
+
+void LivroMaisRecente(HASHING *H){
+    int i,j;
+    LISTA *LivrosMaisRecentes = CriarLista();
+    LivrosMaisRecentes->NEL=0;
+
+    NO_CHAVE *noc_atual=H->LChaves->Inicio;
+
+    printf("TESTE1 \n");
+    for(i=0;i<H->LChaves->NEL;i++){
+        NO_CHAVE *noc_temp=noc_atual;
+        NO_CHAVE *noc_prox=noc_atual->Prox;
+
+        NO *no_atual=noc_atual->DADOS->Inicio;
+        for(i=0;i<=noc_atual->DADOS->NEL;i++){
+            NO *no_temp=no_atual;
+
+            LIVRO *LIVRO_TEMP=no_atual->Info;
+            LIVRO *LIVRO_MAIS_TEMP=LivrosMaisRecentes->Inicio->Info;
+printf("TESTE \n");
+            if(LivrosMaisRecentes->NEL==0){
+
+                AddLista(LivrosMaisRecentes,no_atual->Info);
+            }
+            else if(LIVRO_TEMP->ANO_PLUBLICACAO == LIVRO_MAIS_TEMP->ANO_PLUBLICACAO){
+                AddLista(LivrosMaisRecentes,no_atual->Info);
+            }
+            else if(LIVRO_TEMP->ANO_PLUBLICACAO > LIVRO_MAIS_TEMP->ANO_PLUBLICACAO){
+                int i;
+                LIVRO *LMA=LivrosMaisRecentes->Inicio->Info;
+                for(i=0;i<=LivrosMaisRecentes->NEL;i++){
+                    RemoverLista(LivrosMaisRecentes, LMA);
+                    LMA=LivrosMaisRecentes->Inicio->Prox;
+                }
+
+                AddLista(LivrosMaisRecentes,no_atual->Info);
+            }
+        }
+    }
+
+    ShowLista(LivrosMaisRecentes,MostrarLivro);
+
 }
