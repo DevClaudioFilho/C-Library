@@ -141,22 +141,15 @@ LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area, int _ano_p
     strcpy(P->TITULO, _titulo);
     P->AUTOR = (char *)malloc((strlen(_autor) + 1)*sizeof(char));
     strcpy(P->AUTOR, _autor);
-<<<<<<< HEAD
     P->AREA = (char *)malloc((strlen(_area) + 1)*sizeof(char));
     strcpy(P->AREA, _area);
-=======
->>>>>>> main
     P->ANO_PLUBLICACAO = _ano_pub;
     return P;
 }
 
 void MostrarLivro(LIVRO *P)
 {
-<<<<<<< HEAD
     printf("\tLIVRO: %d [%s] [%s] [%s] [%d]\n", P->ISBN, P->TITULO,P->AUTOR,P->AREA ,P->ANO_PLUBLICACAO);
-=======
-    printf("\tPESSOA: ID: %d [%s] [%d]\n", P->ISBN, P->TITULO, P->ANO_PLUBLICACAO);
->>>>>>> main
 }
 
 void DestruirLivro(LIVRO *P)
