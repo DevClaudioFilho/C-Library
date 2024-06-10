@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "Data.h"
 #include "Lista.h"
 #include "Hashing.h"
 #include "Biblioteca.h"
+#include "Pessoa.h"
 
 #include "Pessoa.h"
 
@@ -21,7 +23,7 @@ int Menu()
     printf("\n |                                                                |");
     printf("\n | [1] Menu de Requisitantes                                      |");// Requisitantes
     printf("\n | [2] Menu de Livros                                             |");// Livros
-    printf("\n | [3] Menu de Emprestimos                                        |");// Requisições
+    printf("\n | [3] Menu de Emprestimos                                        |");// Requisiï¿½ï¿½es
     printf("\n | [4] Listar Biblioteca                                          |");
     printf("\n | [5] Load Biblioteca                                            |");
     printf("\n |                                                                |");
@@ -51,13 +53,12 @@ int main()
     LISTA *ListaDistrito = CriarLista();
     LISTA *ListaConcelho = CriarLista();
     LISTA *ListaFreguesia = CriarLista();
-
     LISTA *ListaLivro = CriarLista();
 
-    //Exemplo_Hashing();
-    BIBLIOTECA *Bib;
-    Bib = CriarBiblioteca("Biblioteca-ESTGV", "log.txt");
-    int OP, RPessoa;
+
+    HASHING *HasLivros = CriarHashing();
+
+    int OP, RPessoa,RLivro;
     do
     {
         setbuf (stdin, 0);
@@ -71,10 +72,15 @@ int main()
                     OP=0;
                 };
                 break;
-            case 2: system("pause"); break;
+
+            case 2:
+                RLivro=PainelLivro(HasLivros);
+                if(RLivro==9){
+                    OP=0;
+                };
+                break;
+
             case 3: system("pause"); break;
-            case 4: LoadFicheiroBiblioteca(Bib); break;
-            case 5: ShowBiblioteca(Bib); break;
             case 0: break;
             default:
                 if(OP == -1){
@@ -100,7 +106,6 @@ int main()
 
     DestruirLista(ListaLivro);
 
-    DestruirBiblioteca(Bib);
 
     limparTerminal();
     printf("Obrigado por utilizar o BSoft, volte logo\n");

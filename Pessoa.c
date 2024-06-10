@@ -4,6 +4,7 @@
 #include "Lista.h"
 #include "Hashing.h"
 #include "Biblioteca.h"
+#include "Data.h"
 
 /** \brief Permite Alocar e inicializar uma estrutura Pessoa
  *
@@ -46,44 +47,6 @@ int MenuPessoas()
     return OPPessoa;
 }
 
-int verificarID(int ID_Pessoa){
-    int ultimoDigito = ID_Pessoa%10;
-    int penultimoDigito = (ID_Pessoa / 10) % 10;
-
-    if(ultimoDigito+penultimoDigito==10){
-        return 1;
-    }
-    else{
-        return 0;
-    };
-}
-
-int gerarID(){
-    int c,tmpNum;
-    char temp_id[8],tmpChar;
-
-    for(c=0; c<=7; c++){
-        if(c<6){
-            tmpNum = Aleatorio(0,9);
-            tmpChar = '0' + tmpNum;
-            temp_id[c] = tmpChar;
-        }
-        if(c==6){
-            tmpNum = Aleatorio(1,9);
-            tmpChar = '0' + tmpNum;
-            temp_id[c] = tmpChar;
-        }
-        if(c>6){
-            int validator= temp_id[c-1] - '0';
-            tmpNum = 10-validator;
-            tmpChar = '0' + tmpNum;
-            temp_id[c] = tmpChar;
-        }
-    }
-    int INT_ID=atoi(temp_id);
-    return INT_ID;
-}
-
 char PainelPessoa(LISTA *L_PESS){
     int OPPessoa;
 
@@ -93,27 +56,46 @@ char PainelPessoa(LISTA *L_PESS){
         switch(OPPessoa)
         {
             case 1:{
-                int p_id,p_Id;
-                char p_nome[50],p_categoria[50];
+                int p_Id,p_idfreguesia,p_dia,p_mes,p_ano;
+                char p_nome[50];
+
+                int Id_valido;
+                do{
+                    p_Id = gerarID();
+                    Id_valido = verificarID(p_Id);
+                }
+                while(Id_valido!=1);
+                printf("Id:%d\n",p_Id);
 
                 printf("Nome: ");
-                scanf("%s",p_nome);
-                while ((getchar()) != '\n');
+                scanf("%99[^\n]", p_nome);
+                while (getchar() != '\n');
 
-                printf("Categoria: ");
-                scanf("%s",p_categoria);
-                while ((getchar()) != '\n');
+                printf("Freguesia: ");
+                scanf("%d",&p_idfreguesia);
+                while (getchar() != '\n');
 
-                p_Id = gerarID();
 
-                int valido = verificarID(p_Id);
+                printf("Nascimento: \n");
+                printf("\tDia: ");
+                scanf("%d",&p_dia);
 
-                if( valido == 1 ){
-                    printf("id:%d/n",p_Id);
-                    PESSOA *novaPessoa = CriarPessoa(p_Id, p_nome, p_categoria);
+                printf("\tMes: ");
+                scanf("%d",&p_mes);
+
+                printf("\tAno: ");
+                scanf("%d",&p_ano);
+
+                DATA *D=CriarData(p_dia,p_mes,p_ano);
+                int D_valida=ValidarData(*D);
+
+                if( Id_valido == 1 && D_valida==1){
+                    PESSOA *novaPessoa = CriarPessoa(p_Id, p_nome,D,p_idfreguesia);
                     AddLista(L_PESS, novaPessoa);
                 }
-
+                else{
+                    printf("Ha algo errado no usuario\n");
+                };
                 system("pause");
                 setbuf (stdin, 0);
                 break;
@@ -133,8 +115,15 @@ char PainelPessoa(LISTA *L_PESS){
                 break;
             }
 
-
             case 3: {
+                int OrdLP;
+                printf("Como que deseja ordenar? \n ");
+                printf("[1]  Por nascimento\n ");
+                printf("[2]  Ordem alfabetica\n ");
+                printf("[3]  Por freguesia\n ");
+                scanf("%d",&OrdLP);
+
+                bubbleSort(L_PESS,OrdenarPessoas);
                 ShowLista(L_PESS,MostrarPessoa);
                 system("pause");
                 break;
@@ -176,26 +165,65 @@ char PainelPessoa(LISTA *L_PESS){
     return OPPessoa;
 }
 
-PESSOA *CriarPessoa(int _id, char *_nome, char *_categoria)
+int verificarID(int ID_Pessoa){
+    int c,tmpNum,resto;
+    char temp_id[8];
+    int tmpSum=0;
+
+    sprintf(temp_id, "%d", ID_Pessoa);
+
+    for(c=0; c<=8; c++){
+        tmpNum=temp_id[c] - '0';
+        tmpSum += tmpNum;
+    }
+    resto=tmpSum%10;
+    if(resto==0){
+        return 1;
+    }
+    else{
+        return 0;
+    };
+}
+
+int gerarID(){
+    int c,tmpNum,resto;
+    char temp_id[8],tmpChar;
+
+    int tmpSum=0;
+    for(c=0; c<=7; c++){
+            tmpNum = rand()%10;//Aleatorio(0,9);
+            tmpSum += tmpNum;
+            tmpChar = '0' + tmpNum;
+            temp_id[c] = tmpChar;
+    }
+    resto=tmpSum%10;
+    temp_id[8]='0'+(10-resto);
+
+    int INT_ID=atoi(temp_id);
+    return INT_ID;
+}
+
+PESSOA *CriarPessoa(int _id, char *_nome, DATA *_nascimento, int _idfreguesia)
 {
     PESSOA *P = (PESSOA *)malloc(sizeof(PESSOA));
+    P->ID = _id;
     P->NOME = (char *)malloc((strlen(_nome) + 1)*sizeof(char));
     strcpy(P->NOME, _nome);
-    P->CATEGORIA = (char *)malloc((strlen(_categoria) + 1)*sizeof(char));
-    strcpy(P->CATEGORIA, _categoria);
-    P->ID = _id;
-    printf("\n\n%d\n\n",_id);
+    P->NASCIMENTO = _nascimento;
+    P->ID_FREGUESIA = _idfreguesia;
+
     return P;
 }
 
 void MostrarPessoa(PESSOA *P)
 {
-    printf("\tPESSOA: ID: %d [%s] [%s]\n", P->ID, P->NOME, P->CATEGORIA);
+    printf("\tPESSOA: [%d] [%s] [%d]", P->ID, P->NOME, P->ID_FREGUESIA);
+    MostrarData(P->NASCIMENTO);
 }
 
 int PesquisarPessoa(PESSOA *P, char *palavra )
 {
-    if(stricmp(P->NOME, palavra) == 0)
+    if(strstr(P->NOME, palavra))
     {
         return 1;
     }
@@ -206,8 +234,58 @@ int PesquisarPessoa(PESSOA *P, char *palavra )
 
 void DestruirPessoa(PESSOA *P)
 {
+    free (P->ID);
     free (P->NOME);
-    free (P->CATEGORIA);
+    DestruirData(P->NASCIMENTO);
+    free (P->ID_FREGUESIA);
+
     free (P);
 }
 
+
+int OrdenarPessoas(PESSOA *a, PESSOA *b,int sw)//1 = TROCA COM A PROXIMA
+{
+    //Por data de nascimento mais velho para o mais novo
+    if(sw == 1){
+
+        if(a->NASCIMENTO->ANO > b->NASCIMENTO->ANO){
+            return 1;
+        }
+        else if(a->NASCIMENTO->ANO == b->NASCIMENTO->ANO){
+            if(a->NASCIMENTO->MES > b->NASCIMENTO->MES){
+                return 1;
+            }
+            else if(a->NASCIMENTO->MES == b->NASCIMENTO->MES){
+                if(a->NASCIMENTO->DIA < b->NASCIMENTO->DIA){
+                    return 1;
+                }
+                else{
+                    return 0;
+                }
+            }
+            else{
+                return 0;
+            }
+        }
+        else{
+            return 0;
+        }
+    }
+
+    //Por ordem alfabetica
+    else if(sw == 2){
+        if( strcmp(a->NOME,b->NOME)< 0){
+            return 1;
+        }
+        return 0;
+    }
+
+    //Por freguesia
+    if(sw == 3){
+        if(a->ID_FREGUESIA > b->ID_FREGUESIA){
+            return 1;
+        }
+        return 0;
+    }
+
+}

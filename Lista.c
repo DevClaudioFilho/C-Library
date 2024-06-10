@@ -2,7 +2,7 @@
 #include "Lista.h"
 
 //--------------------------------------------------
-/** \brief Permite alocar memória para uma lista
+/** \brief Permite alocar memï¿½ria para uma lista
  *
  * \return LISTA* : Retorna a lista alocada
  * \date 10/04/2024
@@ -78,7 +78,7 @@ void RemoverLista(LISTA *L, void *VInfo)
         atual = atual->Prox;
     }
 
-    printf("Valor não encontrado na lista.\n");
+    printf("Valor nï¿½o encontrado na lista.\n");
 }
 
 
@@ -96,6 +96,7 @@ void DestruirLista(LISTA *L)
         Helder = Martim;
     }
     free(L);
+    L->NEL--;
 }
 
 
@@ -105,3 +106,27 @@ int SizeLista(LISTA *L)
     return L->NEL;
 }
 
+void bubbleSort(LISTA *lista,int (*f)(void *,void *,void *),int sw)
+{
+    int i, j;
+    NO *atual;
+    NO *proximo;
+
+    for (i = 0; i < lista->NEL - 1; i++)
+    {
+        atual = lista->Inicio;
+        proximo = atual->Prox;
+
+        for (j = 0; j < lista->NEL - i - 1; j++)
+        {
+            if( f(atual->Info,proximo->Info,sw) == 1){
+                void *temp = atual->Info;
+                atual->Info = proximo->Info;
+                proximo->Info = temp;
+            }
+
+            atual = atual->Prox;
+            proximo = proximo->Prox;
+        }
+    }
+}

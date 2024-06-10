@@ -35,6 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Biblioteca.h" />
+		<Unit filename="Data.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Data.h" />
 		<Unit filename="Hashing.c">
 			<Option compilerVar="CC" />
 		</Unit>
