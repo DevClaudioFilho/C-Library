@@ -73,6 +73,16 @@
 		<Cursor>
 			<Cursor1 position="1744" topLine="118" />
 		</Cursor>
+		<Folding>
+			<Collapse line="17" />
+			<Collapse line="48" />
+			<Collapse line="60" />
+			<Collapse line="173" />
+			<Collapse line="185" />
+			<Collapse line="190" />
+			<Collapse line="201" />
+			<Collapse line="209" />
+		</Folding>
 	</File>
 	<File name="Pessoa.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>

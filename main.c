@@ -7,6 +7,8 @@
 #include "Biblioteca.h"
 #include "Pessoa.h"
 
+#include "Pessoa.h"
+
 extern int LerInteiro(char *txt);
 //-----------------------------------------
 
@@ -21,7 +23,7 @@ int Menu()
     printf("\n |                                                                |");
     printf("\n | [1] Menu de Requisitantes                                      |");// Requisitantes
     printf("\n | [2] Menu de Livros                                             |");// Livros
-    printf("\n | [3] Menu de Emprestimos                                        |");// Requisições
+    printf("\n | [3] Menu de Emprestimos                                        |");// Requisiï¿½ï¿½es
     printf("\n | [4] Listar Biblioteca                                          |");
     printf("\n | [5] Load Biblioteca                                            |");
     printf("\n |                                                                |");
