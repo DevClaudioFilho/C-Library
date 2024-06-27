@@ -14,7 +14,7 @@ REQUISICAO *CriarRequisicao(int _id, PESSOA *P, LIVRO *L)
 void MostrarRequisicao(REQUISICAO *R)
 {
     printf("REQ ID = %d\n", R->ID);
-    MostrarPessoa(R->Ptr_Req);
+    MostrarPessoa(R->Ptr_Req,"eee.txt");
     MostrarLivro(R->Ptr_Livro);
 }
 void DestruirRequisicao(REQUISICAO *R)

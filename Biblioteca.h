@@ -16,7 +16,7 @@ typedef struct
     char FICHEIRO_LOGS[50];
 
     HASHING *HLivros;
-   // LISTA   *LRequisitantes;
+    LISTA   *LPessoas;
    // LISTA_Requisicoes *LRequisicoes;
 }BIBLIOTECA;
 

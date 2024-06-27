@@ -48,15 +48,7 @@ int Menu()
 int main()
 {
     //inicia bliblioteca
-
-    LISTA *ListaPessoa = CriarLista();
-    LISTA *ListaDistrito = CriarLista();
-    LISTA *ListaConcelho = CriarLista();
-    LISTA *ListaFreguesia = CriarLista();
-    LISTA *ListaLivro = CriarLista();
-
-
-    HASHING *HasLivros = CriarHashing();
+    BIBLIOTECA *B = CriarBiblioteca("BSoft","log.txt");
 
     int OP, RPessoa,RLivro;
     do
@@ -67,20 +59,22 @@ int main()
         switch(OP)
         {
             case 1:
-                RPessoa=PainelPessoa(ListaPessoa);
+                RPessoa=PainelPessoa(B);
                 if(RPessoa==9){
                     OP=0;
                 };
                 break;
 
             case 2:
-                RLivro=PainelLivro(HasLivros);
+                RLivro=PainelLivro(B);
                 if(RLivro==9){
                     OP=0;
                 };
                 break;
 
             case 3: system("pause"); break;
+
+
             case 0: break;
             default:
                 if(OP == -1){
@@ -98,13 +92,11 @@ int main()
 
     }while (OP != 0);
 
-    DestruirLista(ListaPessoa);
+    DestruirLista(B->LPessoas,B->FICHEIRO_LOGS);
 
-    DestruirLista(ListaDistrito);
-    DestruirLista(ListaConcelho);
-    DestruirLista(ListaFreguesia);
-
-    DestruirLista(ListaLivro);
+    //DestruirLista(ListaDistrito);
+    //DestruirLista(ListaConcelho);
+    //DestruirLista(ListaFreguesia);
 
 
     limparTerminal();

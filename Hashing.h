@@ -25,10 +25,10 @@ typedef struct
 }HASHING;
 
 HASHING *CriarHashing();
-void DestruirHashing(HASHING *H);
-void AddHashing(HASHING *H, void *P,void *NChave, char *type);
-NO_CHAVE *FuncaoHashing(HASHING *H, void *X, void *NChave,char *type);
-void ShowHashing(HASHING *H,void (*f)(void *),char *type);
-void OrdenarHashing(HASHING *H);
+void DestruirHashing(HASHING *H,char *log_file);
+void AddHashing(HASHING *H, void *P,void *NChave, char *type,char *log_file);
+NO_CHAVE *FuncaoHashing(HASHING *H, void *X, void *NChave,char *type,char *log_file);
+void ShowHashing(HASHING *H,void (*f)(void *),char *type,char *log_file);
+void OrdenarHashing(HASHING *H,char *log_file);
 
 #endif // HASHING_H_INCLUDED

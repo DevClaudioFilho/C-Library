@@ -18,12 +18,12 @@ typedef struct
 
 LISTA *CriarLista();
 
-void AddLista(LISTA *L, void *X);
-void ShowLista(LISTA *L, void (*f)(void *));
-void *PesquisarLista(LISTA *L, int (*fcomp)(void *, void *), void *palavra);
-void RemoverLista(LISTA *L, void *VInfo);
-void DestruirLista(LISTA *L);
-int SizeLista(LISTA *L);
+void AddLista(LISTA *L, void *X,char *log_file);
+void ShowLista(LISTA *L, void (*f)(void *),char *log_file);
+void *PesquisarLista(LISTA *L, int (*fcomp)(void *, void *,void *), void *palavra,char *log_file);
+void RemoverLista(LISTA *L, void *VInfo,char *log_file);
+void DestruirLista(LISTA *L,char *log_file);
+int SizeLista(LISTA *L,char *log_file);
 
 #endif // LISTA_H_INCLUDED
 

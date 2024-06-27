@@ -1,4 +1,3 @@
-
 #include "Lista.h"
 
 //--------------------------------------------------
@@ -16,18 +15,29 @@ LISTA *CriarLista()
     return L;
 }
 
-void AddLista(LISTA *L, void *X)
+void AddLista(LISTA *L, void *X,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     if (!L) return;
     NO *aux = (NO *)malloc(sizeof(NO));
     aux->Info = X;
     aux->Prox = L->Inicio;
     L->Inicio = aux;
     L->NEL++;
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
 }
 
-void ShowLista(LISTA *L, void (*f)(void *))
+void ShowLista(LISTA *L, void (*f)(void *),char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     if (!L) return;
     if (!L->Inicio) return;
     NO *P = L->Inicio;
@@ -36,23 +46,37 @@ void ShowLista(LISTA *L, void (*f)(void *))
         f(P->Info);
         P = P->Prox;
     }
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
 }
 
-void *PesquisarLista(LISTA *L, int (*fcomp)(void *, void *), void *palavra)
+void *PesquisarLista(LISTA *L, int (*fcomp)(void *, void *,void *), void *palavra,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     if (!L) return NULL;
     NO *P = L->Inicio;
     while (P)
     {
-        if (fcomp(P->Info, palavra) == 1)
+        if (fcomp(P->Info, palavra,log_file) == 1)
             return P->Info;
         P = P->Prox;
     }
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
     return NULL;
 }
 
-void RemoverLista(LISTA *L, void *VInfo)
+void RemoverLista(LISTA *L, void *VInfo,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     NO *atual = L->Inicio;
     NO *anterior = NULL;
 
@@ -69,8 +93,11 @@ void RemoverLista(LISTA *L, void *VInfo)
                 anterior->Prox = atual->Prox;
             }
 
-            free(atual);
+            //free(atual);
             L->NEL--;
+
+            fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+            fclose(F_Logs);
             return;
         }
 
@@ -78,36 +105,53 @@ void RemoverLista(LISTA *L, void *VInfo)
         atual = atual->Prox;
     }
 
-    printf("Valor n�o encontrado na lista.\n");
+    printf("Valor nao encontrado na lista.\n");
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
 }
 
-
-void DestruirLista(LISTA *L)
+void DestruirLista(LISTA *L,char *log_file)
 {
-    //printf("Implementar <%s>\n", __FUNCTION__);
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     if (!L) return;
-    NO *Martim;
-    NO *Helder = L->Inicio;
-    while (Helder)
+    NO *proxNO;
+    NO *noInicio = L->Inicio;
+    while (noInicio)
     {
-        Martim = Helder->Prox;
-        DestruirPessoa(Helder->Info);
-        free (Helder);
-        Helder = Martim;
+        proxNO = noInicio->Prox;
+        free (noInicio);
+        noInicio = proxNO;
     }
     free(L);
     L->NEL--;
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
 }
 
-
-int SizeLista(LISTA *L)
+int SizeLista(LISTA *L,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     if (!L) return -1;
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
     return L->NEL;
 }
 
-void bubbleSort(LISTA *lista,int (*f)(void *,void *,void *),int sw)
+void bubbleSort(LISTA *lista,int (*f)(void *,void *,void *),int sw,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     int i, j;
     NO *atual;
     NO *proximo;
@@ -129,4 +173,7 @@ void bubbleSort(LISTA *lista,int (*f)(void *,void *,void *),int sw)
             proximo = proximo->Prox;
         }
     }
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
 }

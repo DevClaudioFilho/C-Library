@@ -17,9 +17,10 @@ BIBLIOTECA *CriarBiblioteca(char *_nome, char *_logs)
     Bib->NOME = (char *)malloc((strlen(_nome) + 1) * sizeof(char));
     strcpy(Bib->NOME, _nome);
     strcpy(Bib->FICHEIRO_LOGS, _logs);
-    //Bib->HLivros = CriarHashing();
+    Bib->HLivros = CriarHashing();
+    Bib->LPessoas = CriarLista();
     //Bib->LRequisicoes = CriarListaRequisicoes();
-    //Bib->LRequisitantes = CriarListaPessoas();
+
     return Bib;
 }
 
@@ -30,14 +31,16 @@ BIBLIOTECA *CriarBiblioteca(char *_nome, char *_logs)
  * \author : Docentes e Alunos
  * \date   : 11/04/2024
  */
+
 void ShowBiblioteca(BIBLIOTECA *B)
 {
     FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
     time_t now = time(NULL) ;
+
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
     printf("NOME BIBLIOTECA = [%s]\n", B->NOME);
-    // Vosso Codigo.....
-    //ShowHashing(B->HLivros);
+    printf("Livros: %d",B->HLivros->LChaves->NEL);
+    printf("Pessoas: %d",B->LPessoas->NEL);
 
     fclose(F_Logs);
 }
@@ -49,6 +52,8 @@ void DestruirBiblioteca(BIBLIOTECA *B)
 
     // Vosso Codigo.....
     free (B->NOME);
+    //DestruirLista(B->LPessoas,DestruirPessoa,B->FICHEIRO_LOGS);
+    //DestruirHashing(B->HLivros,B->FICHEIRO_LOGS)
     //------
     free(B);
 
@@ -59,28 +64,20 @@ int LoadFicheiroBiblioteca(BIBLIOTECA *B)
     FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
     time_t now = time(NULL) ;
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
-
     fclose(F_Logs);
-    return EXIT_SUCCESS;
-}
-int AddLivroBiblioteca(BIBLIOTECA *B, LIVRO *L)
-{
-    FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
-    time_t now = time(NULL) ;
-    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
 
-    // Aqui o teu codigo
+    //if(){
+        //Pre validacoes
+        //if( PesquisarHashing(B->HLivros,PesquisarLivro,isbn) ){
+                //fprintf(F_Logs, "\t %s- ISBN [%d] nao e valido\n", ctime(&now), _id);
+                //continue;
+        //}
 
-    fclose(F_Logs);
-    return EXIT_SUCCESS;
-}
-int RemoverLivroBiblioteca(BIBLIOTECA *B, int isbn)
-{
-    FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
-    time_t now = time(NULL) ;
-    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+        //LIVRO *novoLivro = CriarLivro(l_isbn,l_titulo,l_autor,l_area,l_publicacao);
+        //AddHashing(H_LIVRO,novoLivro,novoLivro->AREA,"char",file_log);
+    //}
 
-    // Aqui o teu codigo
+
 
     fclose(F_Logs);
     return EXIT_SUCCESS;
@@ -108,28 +105,6 @@ char *ApelidoMaisComum(BIBLIOTECA *B)
     return NULL;
 }
 char *AreaMaisComum(BIBLIOTECA *B)
-{
-    FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
-    time_t now = time(NULL) ;
-    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
-
-    // Aqui o teu codigo
-
-    fclose(F_Logs);
-    return NULL;
-}
-int AddRequisitante(BIBLIOTECA *B, void *X)
-{
-    FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
-    time_t now = time(NULL) ;
-    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
-
-    // Aqui o teu codigo
-
-    fclose(F_Logs);
-    return EXIT_SUCCESS;
-}
-PESSOA *PesquisarRequisitante(BIBLIOTECA *B, int cod)
 {
     FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
     time_t now = time(NULL) ;

@@ -45,8 +45,5 @@ void MostrarData(DATA *D)
 
 void DestruirData(DATA *D)
 {
-    free (D->DIA);
-    free (D->MES);
-    free (D->ANO);
     free (D);
 }

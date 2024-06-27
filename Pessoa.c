@@ -47,9 +47,13 @@ int MenuPessoas()
     return OPPessoa;
 }
 
-char PainelPessoa(LISTA *L_PESS){
+char PainelPessoa(BIBLIOTECA *BPess){
     int OPPessoa;
+    LISTA *L_PESS = BPess->LPessoas;
+    char *file_log= BPess->FICHEIRO_LOGS;
 
+    printf("%s",&file_log);
+    system("pause");
      do
     {
         OPPessoa = MenuPessoas();
@@ -59,12 +63,7 @@ char PainelPessoa(LISTA *L_PESS){
                 int p_Id,p_idfreguesia,p_dia,p_mes,p_ano;
                 char p_nome[50];
 
-                int Id_valido;
-                do{
-                    p_Id = gerarID();
-                    Id_valido = verificarID(p_Id);
-                }
-                while(Id_valido!=1);
+                p_Id = gerarID(file_log);
                 printf("Id:%d\n",p_Id);
 
                 printf("Nome: ");
@@ -74,7 +73,6 @@ char PainelPessoa(LISTA *L_PESS){
                 printf("Freguesia: ");
                 scanf("%d",&p_idfreguesia);
                 while (getchar() != '\n');
-
 
                 printf("Nascimento: \n");
                 printf("\tDia: ");
@@ -89,9 +87,9 @@ char PainelPessoa(LISTA *L_PESS){
                 DATA *D=CriarData(p_dia,p_mes,p_ano);
                 int D_valida=ValidarData(*D);
 
-                if( Id_valido == 1 && D_valida==1){
-                    PESSOA *novaPessoa = CriarPessoa(p_Id, p_nome,D,p_idfreguesia);
-                    AddLista(L_PESS, novaPessoa);
+                if( D_valida==1){
+                    PESSOA *novaPessoa = CriarPessoa(p_Id, p_nome,D,p_idfreguesia,file_log);
+                    AddLista(L_PESS, novaPessoa,file_log);
                 }
                 else{
                     printf("Ha algo errado no usuario\n");
@@ -108,9 +106,11 @@ char PainelPessoa(LISTA *L_PESS){
                 scanf("%s",SPesoa);
                 while ((getchar()) != '\n');
 
-                PESSOA *PES = PesquisarLista(L_PESS, PesquisarPessoa,SPesoa);
+                PESSOA *PES = PesquisarLista(L_PESS, PesquisarPessoa,SPesoa,file_log);
 
-                RemoverLista(L_PESS, PES);
+                RemoverLista(L_PESS,PES,file_log);
+                DestruirPessoa(PES,file_log);
+
                 system("pause");
                 break;
             }
@@ -124,7 +124,7 @@ char PainelPessoa(LISTA *L_PESS){
                 scanf("%d",&OrdLP);
 
                 bubbleSort(L_PESS,OrdenarPessoas);
-                ShowLista(L_PESS,MostrarPessoa);
+                ShowLista(L_PESS,MostrarPessoa,file_log);
                 system("pause");
                 break;
             }
@@ -136,9 +136,9 @@ char PainelPessoa(LISTA *L_PESS){
                 scanf("%s",SPesoa);
                 while ((getchar()) != '\n');
 
-                PESSOA *PES = PesquisarLista(L_PESS, PesquisarPessoa,SPesoa);
+                PESSOA *PES = PesquisarLista(L_PESS, PesquisarPessoa,SPesoa,file_log);
                 if (PES)
-                    MostrarPessoa(PES);
+                    MostrarPessoa(PES,BPess->FICHEIRO_LOGS);
                 else
                     printf("Nao existe essa pessoa\n");
                 system("pause");
@@ -165,7 +165,11 @@ char PainelPessoa(LISTA *L_PESS){
     return OPPessoa;
 }
 
-int verificarID(int ID_Pessoa){
+int verificarID(int ID_Pessoa,char *log_file){
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     int c,tmpNum,resto;
     char temp_id[8];
     int tmpSum=0;
@@ -178,33 +182,67 @@ int verificarID(int ID_Pessoa){
     }
     resto=tmpSum%10;
     if(resto==0){
+        fclose(F_Logs);
         return 1;
     }
     else{
+        fclose(F_Logs);
         return 0;
     };
 }
 
-int gerarID(){
-    int c,tmpNum,resto;
+int gerarID(char *log_file){
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
+
+    int Id_valido,c,tmpNum,resto,INT_ID,tmpSum;
     char temp_id[8],tmpChar;
+    do{
+        tmpSum=0;
+        for(c=0; c<=7; c++){
+                tmpNum = rand()%10;//Aleatorio(0,9);
+                tmpSum += tmpNum;
+                tmpChar = '0' + tmpNum;
+                temp_id[c] = tmpChar;
+        }
+        resto=tmpSum%10;
+        temp_id[8]='0'+(10-resto);
 
-    int tmpSum=0;
-    for(c=0; c<=7; c++){
-            tmpNum = rand()%10;//Aleatorio(0,9);
-            tmpSum += tmpNum;
-            tmpChar = '0' + tmpNum;
-            temp_id[c] = tmpChar;
+        INT_ID= atoi(temp_id);
+
+        Id_valido = verificarID(INT_ID,log_file);
     }
-    resto=tmpSum%10;
-    temp_id[8]='0'+(10-resto);
+    while(Id_valido!=1);
 
-    int INT_ID=atoi(temp_id);
     return INT_ID;
 }
 
-PESSOA *CriarPessoa(int _id, char *_nome, DATA *_nascimento, int _idfreguesia)
+PESSOA *CriarPessoa(int _id, char *_nome, DATA *_nascimento, int _idfreguesia,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
+    //Pre validacoes
+    int Id_valido = verificarID(_id,log_file);
+    if( Id_valido != 1 )fprintf(F_Logs, "\t %s- ID [%d] nao e valido\n", ctime(&now), _id);
+
+    int D_valida=ValidarData(_nascimento);
+    if( D_valida != 1 )fprintf(F_Logs, "\t %s- Data [%d/%d/%d] nao e valida\n",
+                               ctime(&now),
+                               _nascimento->DIA,
+                               _nascimento->MES,
+                               _nascimento->ANO
+                               );
+
+    //int Validar_freguesia
+    //if( D_valida != 1 )fprintf(F_Logs, "\t %s- Data [%d/%d/%d] nao e valida\n",ctime(&now),D->DIA, D->MES, D->ANO);
+
+    if( Id_valido!= 1 || D_valida!=1 )return;
+    //
+
     PESSOA *P = (PESSOA *)malloc(sizeof(PESSOA));
     P->ID = _id;
     P->NOME = (char *)malloc((strlen(_nome) + 1)*sizeof(char));
@@ -212,17 +250,28 @@ PESSOA *CriarPessoa(int _id, char *_nome, DATA *_nascimento, int _idfreguesia)
     P->NASCIMENTO = _nascimento;
     P->ID_FREGUESIA = _idfreguesia;
 
+    fclose(F_Logs);
     return P;
 }
 
-void MostrarPessoa(PESSOA *P)
+void MostrarPessoa(PESSOA *P,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     printf("\tPESSOA: [%d] [%s] [%d]", P->ID, P->NOME, P->ID_FREGUESIA);
     MostrarData(P->NASCIMENTO);
+        fclose(F_Logs);
 }
 
-int PesquisarPessoa(PESSOA *P, char *palavra )
+int PesquisarPessoa(PESSOA *P, char *palavra,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
+
     if(strstr(P->NOME, palavra))
     {
         return 1;
@@ -232,16 +281,17 @@ int PesquisarPessoa(PESSOA *P, char *palavra )
         return 0;
 }
 
-void DestruirPessoa(PESSOA *P)
+void DestruirPessoa(PESSOA *P,char *log_file)
 {
-    free (P->ID);
-    free (P->NOME);
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
+
+    free(P->NOME);
     DestruirData(P->NASCIMENTO);
-    free (P->ID_FREGUESIA);
-
-    free (P);
+    free(P);
 }
-
 
 int OrdenarPessoas(PESSOA *a, PESSOA *b,int sw)//1 = TROCA COM A PROXIMA
 {

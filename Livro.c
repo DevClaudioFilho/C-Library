@@ -1,5 +1,6 @@
 #include "Livro.h"
 #include "Hashing.h"
+#include "Biblioteca.h"
 
 int MenuLivro()
 {
@@ -32,17 +33,18 @@ int MenuLivro()
     return OPLivro;
 }
 
-char PainelLivro(HASHING *H_LIVRO){
+char PainelLivro(BIBLIOTECA *BLivro){
     int OPLivro;
-
-     do
+    HASHING *H_LIVRO = BLivro->HLivros;
+    char *file_log= BLivro->FICHEIRO_LOGS;
+    do
     {
         OPLivro = MenuLivro();
         switch(OPLivro)
         {
             case 1:{
                 int l_isbn,l_publicacao;
-                char l_titulo[50],l_autor[50],l_area[50];
+                char l_titulo[50],l_autor[50],l_area[100];
 
                 printf("ISBN: ");
                 scanf("%d",&l_isbn);
@@ -63,10 +65,12 @@ char PainelLivro(HASHING *H_LIVRO){
                 printf("Ano publicacao: ");
                 scanf("%d",&l_publicacao);
 
-                //VERIFICAR SE I ISBN JA EXISTE
+
 
                 LIVRO *novoLivro = CriarLivro(l_isbn,l_titulo,l_autor,l_area,l_publicacao);
-                AddHashing(H_LIVRO,novoLivro,novoLivro->AREA,"char");
+                printf("/n %s /n",l_area);
+                printf("/n %s /n",novoLivro->AREA);
+                AddHashing(H_LIVRO,novoLivro,novoLivro->AREA,"char",file_log);
 
                 system("pause");
                 setbuf (stdin, 0);
@@ -81,13 +85,13 @@ char PainelLivro(HASHING *H_LIVRO){
 
                 LIVRO *LIV = PesquisarHashing(H_LIVRO, PesquisarLivro,SLivro);
 
-                RemoverLista(H_LIVRO->LChaves->Inicio->DADOS, LIV);
+                RemoverLista(H_LIVRO->LChaves->Inicio->DADOS,LIV,file_log);
                 system("pause");
                 break;
             }
 
             case 3: {
-                ShowHashing(H_LIVRO,MostrarLivro,"char");
+                ShowHashing(H_LIVRO,MostrarLivro,"char",file_log);
                 system("pause");
                 break;
             }
@@ -144,6 +148,7 @@ LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area, int _ano_p
     P->AREA = (char *)malloc((strlen(_area) + 1)*sizeof(char));
     strcpy(P->AREA, _area);
     P->ANO_PLUBLICACAO = _ano_pub;
+
     return P;
 }
 
@@ -161,6 +166,9 @@ void DestruirLivro(LIVRO *P)
 
 int PesquisarLivro(LIVRO *L, int _isbn )
 {
+    printf("%d/n",L->ISBN);
+    printf("%d/n",_isbn);
+
     if(L->ISBN == _isbn)
     {
         return 1;
@@ -171,14 +179,13 @@ int PesquisarLivro(LIVRO *L, int _isbn )
 }
 
 
-void LivroMaisRecente(HASHING *H){
-    int i,j;
+void LivroMaisRecente(HASHING *H,char *file_log){
+    int i;
     LISTA *LivrosMaisRecentes = CriarLista();
     LivrosMaisRecentes->NEL=0;
 
     NO_CHAVE *noc_atual=H->LChaves->Inicio;
 
-    printf("TESTE1 \n");
     for(i=0;i<H->LChaves->NEL;i++){
         NO_CHAVE *noc_temp=noc_atual;
         NO_CHAVE *noc_prox=noc_atual->Prox;
@@ -189,27 +196,25 @@ void LivroMaisRecente(HASHING *H){
 
             LIVRO *LIVRO_TEMP=no_atual->Info;
             LIVRO *LIVRO_MAIS_TEMP=LivrosMaisRecentes->Inicio->Info;
-printf("TESTE \n");
             if(LivrosMaisRecentes->NEL==0){
-
-                AddLista(LivrosMaisRecentes,no_atual->Info);
+                AddLista(LivrosMaisRecentes,no_atual->Info,file_log);
             }
             else if(LIVRO_TEMP->ANO_PLUBLICACAO == LIVRO_MAIS_TEMP->ANO_PLUBLICACAO){
-                AddLista(LivrosMaisRecentes,no_atual->Info);
+                AddLista(LivrosMaisRecentes,no_atual->Info,file_log);
             }
             else if(LIVRO_TEMP->ANO_PLUBLICACAO > LIVRO_MAIS_TEMP->ANO_PLUBLICACAO){
                 int i;
                 LIVRO *LMA=LivrosMaisRecentes->Inicio->Info;
                 for(i=0;i<=LivrosMaisRecentes->NEL;i++){
-                    RemoverLista(LivrosMaisRecentes, LMA);
+                    RemoverLista(LivrosMaisRecentes, LMA,file_log);
                     LMA=LivrosMaisRecentes->Inicio->Prox;
                 }
 
-                AddLista(LivrosMaisRecentes,no_atual->Info);
+                AddLista(LivrosMaisRecentes,no_atual->Info,file_log);
             }
         }
     }
 
-    ShowLista(LivrosMaisRecentes,MostrarLivro);
+    ShowLista(LivrosMaisRecentes,MostrarLivro,file_log);
 
 }

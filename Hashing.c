@@ -1,5 +1,6 @@
 
 #include "Hashing.h"
+#include <time.h>
 
 LISTA_CHAVES *CriarListaCHAVES()
 {
@@ -36,7 +37,7 @@ HASHING *CriarHashing()
     return Has;
 }
 
-void DestruirHashing(HASHING *H)
+void DestruirHashing(HASHING *H,char *log_file)
 {
     if (!H) return;
     NO_CHAVE *Seguinte;
@@ -44,28 +45,42 @@ void DestruirHashing(HASHING *H)
     while (P)
     {
         Seguinte = P->Prox;
-        DestruirLista(P->DADOS);
-        free (P->KEY);
-        free (P);
+        DestruirLista(P->DADOS,log_file);
+        free(P->KEY);
+        free(P);
         P = Seguinte;
     }
     free(H);
 }
 
-void AddHashing(HASHING *H, void *P,void *NChave, char *type)
+void AddHashing(HASHING *H, void *P,void *NChave, char *type,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     if (!H) return;
     if (!H->LChaves) return;
-    NO_CHAVE *Key_colocar = FuncaoHashing(H, P ,NChave,type);
+
+    NO_CHAVE *Key_colocar = FuncaoHashing(H, P ,NChave,type,log_file);
     if (!Key_colocar)
     {
         Key_colocar = AddCHAVE(H->LChaves, NChave,type);
     }
-    AddLista(Key_colocar->DADOS, P);
+    AddLista(Key_colocar->DADOS, P,log_file);
+
+
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
 }
 
-NO_CHAVE *FuncaoHashing(HASHING *H, void *X,void *NChave,char *type)
+NO_CHAVE *FuncaoHashing(HASHING *H, void *X,void *NChave,char *type,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     if (!H) return NULL;
     if (!H->LChaves) return NULL;
 
@@ -85,11 +100,19 @@ NO_CHAVE *FuncaoHashing(HASHING *H, void *X,void *NChave,char *type)
         }
         P = P->Prox;
     }
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
+
     return NULL;
 }
 
-void ShowHashing(HASHING *H,void (*f)(void *),char *type)
+void ShowHashing(HASHING *H,void (*f)(void *),char *type,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     if (!H) return;
     if (!H->LChaves) return;
 
@@ -101,16 +124,23 @@ void ShowHashing(HASHING *H,void (*f)(void *),char *type)
             printf("CAT --> [%s] [%d]\n", P->KEY,P->DADOS->NEL);
         }
         else{
-           printf("CAT --> [%d] [%d]\n", P->KEY,P->DADOS->NEL);
+           printf("CAT --> [%s] [%d]\n", P->KEY,P->DADOS->NEL);
         };
 
-        ShowLista(P->DADOS,f);
+        ShowLista(P->DADOS,f,log_file);
         P = P->Prox;
     }
+
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
 }
 
-void *PesquisarHashing(HASHING *H,void (*f)(void *),void *word)
+void *PesquisarHashing(HASHING *H,void (*f)(void *),void *word,char *log_file)
 {
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
     if (!H) return;
     if (!H->LChaves) return;
     NO_CHAVE *L = H->LChaves->Inicio;
@@ -118,13 +148,15 @@ void *PesquisarHashing(HASHING *H,void (*f)(void *),void *word)
     void *T;
     while (L)
     {
-        T=PesquisarLista(L->DADOS,f,word);
+        T=PesquisarLista(L->DADOS,f,word,log_file);
         if(T!=NULL){
             return T;
         }
         L = L->Prox;
     }
 
+    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
     return NULL;
 }
 
