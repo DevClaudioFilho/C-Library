@@ -4,8 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-#include "Hashing.h"
+#include "Uteis.h"
+#include "Biblioteca.h"
+
 
 typedef struct
 {
@@ -16,11 +19,12 @@ typedef struct
     int ANO_PLUBLICACAO;
 }LIVRO;
 
-LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area ,int _ano_pub );
-void MostrarLivro(LIVRO *L);
-void DestruirLivro(LIVRO *L);
-int PesquisarLivro(LIVRO *L, int ISBN);
-int OrdenarLivros(LIVRO *a, LIVRO *b,int sw);
+int MenuLivro();
+LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area, int _ano_pub,char *log_file );
+void MostrarLivro(LIVRO *P,char *log_file);
+void DestruirLivro(LIVRO *P,char *log_file);
+int PesquisarLivro(LIVRO *L, int _isbn,char *log_file );
+void LivroMaisRecente(HASHING *H,char *file_log);
 
 
 #endif // LIVRO_H_INCLUDED

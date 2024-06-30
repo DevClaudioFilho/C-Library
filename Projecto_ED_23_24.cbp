@@ -51,6 +51,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Livro.h" />
+		<Unit filename="Locais.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Locais.h" />
 		<Unit filename="Pessoa.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -62,6 +66,7 @@
 		<Unit filename="Uteis.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Uteis.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

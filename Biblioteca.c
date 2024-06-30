@@ -1,6 +1,10 @@
-
-
+#include "Pessoa.h"
+#include "Data.h"
+#include "Locais.h"
 #include "Biblioteca.h"
+#include "Livro.h"
+
+
 
 /** \brief Aloca Memoria para uma Biblioteca
  *
@@ -19,7 +23,11 @@ BIBLIOTECA *CriarBiblioteca(char *_nome, char *_logs)
     strcpy(Bib->FICHEIRO_LOGS, _logs);
     Bib->HLivros = CriarHashing();
     Bib->LPessoas = CriarLista();
-    //Bib->LRequisicoes = CriarListaRequisicoes();
+    Bib->LRequisicoes = CriarLista();
+
+    Bib->LDistritos = CriarLista();
+    Bib->LConcelhos = CriarLista();
+    Bib->LFreguesias = CriarLista();
 
     return Bib;
 }
@@ -44,6 +52,7 @@ void ShowBiblioteca(BIBLIOTECA *B)
 
     fclose(F_Logs);
 }
+
 void DestruirBiblioteca(BIBLIOTECA *B)
 {
     FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
@@ -59,6 +68,117 @@ void DestruirBiblioteca(BIBLIOTECA *B)
 
     fclose(F_Logs);
 }
+
+void ImportPessoas(BIBLIOTECA *B) {
+    FILE *F_Pes = fopen("Requisitantes.txt", "r");
+    if (!F_Pes) return;
+
+    char *file_log = B->FICHEIRO_LOGS;
+    char contents[2000];
+    int ID, ID_FREGUESIA, dia, mes, ano;
+    char NOME[200];
+
+    while (fgets(contents, sizeof(contents), F_Pes) != NULL) {
+        sscanf(contents, "%d\t%[^\t]\t%d-%d-%d\t%d", &ID, NOME, &dia, &mes, &ano, &ID_FREGUESIA);
+
+        if (ValidarData(dia, mes, ano) && verificarID(ID, file_log)) {
+            DATA *Dat = CriarData(dia, mes, ano);
+            PESSOA *novaPessoa = CriarPessoa(ID, NOME, Dat, ID_FREGUESIA, file_log);
+            if(novaPessoa){
+                AddLista(B->LPessoas, novaPessoa, file_log);
+            }
+        }
+    }
+
+    fclose(F_Pes);
+}
+
+void ImportLivro(BIBLIOTECA *B) {
+    FILE *F_Pes = fopen("Livros.txt", "r");
+    if (!F_Pes) return;
+
+    char *file_log = B->FICHEIRO_LOGS;
+    char contents[2000];
+
+    int ISBN;
+    char TITULO[2000];
+    char AUTOR[2000];
+    char AREA[200];
+    int ANO_PLUBLICACAO;
+
+    while (fgets(contents, sizeof(contents), F_Pes) != NULL) {
+        sscanf(contents, "%d\t%[^\t\n]\t%[^\t\n]\t%[^\t\n]\t%d", &ISBN,TITULO,AUTOR,AREA,&ANO_PLUBLICACAO);
+
+        LIVRO *novoLivro = CriarLivro(ISBN,TITULO,AUTOR,AREA,ANO_PLUBLICACAO,file_log);
+        if(novoLivro) AddHashing(B->HLivros,novoLivro,novoLivro->AREA,"char",file_log);
+    }
+
+    fclose(F_Pes);
+}
+
+void ImportFreguesia(BIBLIOTECA *B) {
+    FILE *F_Pes = fopen("freguesia.txt", "r");
+    if (!F_Pes) return;
+
+    char *file_log = B->FICHEIRO_LOGS;
+    char contents[1024];
+    int COD;
+    char NOME[100];
+
+    while (fgets(contents, sizeof(contents), F_Pes) != NULL) {
+        sscanf(contents, "%d\t%[^\n]", &COD, NOME);
+
+        if (ValidaLocalCodigo(COD,3,file_log)==1) {
+            LOCAL *novaLocal = CriarLocal(COD,NOME, file_log);
+            AddLista(B->LFreguesias, novaLocal, file_log);
+        }
+    }
+
+    fclose(F_Pes);
+}
+
+void ImportConselhos(BIBLIOTECA *B) {
+    FILE *F_Pes = fopen("concelhos.txt", "r");
+    if (!F_Pes) return;
+
+    char *file_log = B->FICHEIRO_LOGS;
+    char contents[1024];
+    int COD;
+    char NOME[100];
+
+    while (fgets(contents, sizeof(contents), F_Pes) != NULL) {
+        sscanf(contents, "%d\t%[^\n]", &COD, NOME);
+
+        if (ValidaLocalCodigo(COD,2,file_log)==1) {
+            LOCAL *novaLocal = CriarLocal(COD,NOME, file_log);
+            AddLista(B->LConcelhos, novaLocal, file_log);
+        }
+    }
+
+    fclose(F_Pes);
+}
+
+void ImportDistritos(BIBLIOTECA *B) {
+    FILE *F_Pes = fopen("distritos.txt", "r");
+    if (!F_Pes) return;
+
+    char *file_log = B->FICHEIRO_LOGS;
+    char contents[1024];
+    int COD;
+    char NOME[100];
+
+    while (fgets(contents, sizeof(contents), F_Pes) != NULL) {
+        sscanf(contents, "%d\t%[^\n]", &COD, NOME);
+
+        if (ValidaLocalCodigo(COD,1,file_log)==1) {
+            LOCAL *novaLocal = CriarLocal(COD,NOME,file_log);
+            AddLista(B->LDistritos, novaLocal, file_log);
+        }
+    }
+
+    fclose(F_Pes);
+}
+
 int LoadFicheiroBiblioteca(BIBLIOTECA *B)
 {
     FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
@@ -66,52 +186,55 @@ int LoadFicheiroBiblioteca(BIBLIOTECA *B)
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
     fclose(F_Logs);
 
-    //if(){
-        //Pre validacoes
-        //if( PesquisarHashing(B->HLivros,PesquisarLivro,isbn) ){
-                //fprintf(F_Logs, "\t %s- ISBN [%d] nao e valido\n", ctime(&now), _id);
-                //continue;
-        //}
+    ImportPessoas(B);
+    ImportConselhos(B);
+    ImportDistritos(B);
+    ImportFreguesia(B);
+    ImportLivro(B);
 
-        //LIVRO *novoLivro = CriarLivro(l_isbn,l_titulo,l_autor,l_area,l_publicacao);
-        //AddHashing(H_LIVRO,novoLivro,novoLivro->AREA,"char",file_log);
-    //}
-
-
-
-    fclose(F_Logs);
     return EXIT_SUCCESS;
 }
-LIVRO *LivroMaisRequisitadoBiblioteca(BIBLIOTECA *B)
-{
-    FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
-    time_t now = time(NULL) ;
-    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
 
-    // Aqui o teu codigo
+void ExportPessoas(BIBLIOTECA *B) {
+    FILE *F_Pes = fopen("Requisitantes.txt", "w+");
+    if (!F_Pes) return;
 
-    fclose(F_Logs);
-    return NULL;
+    NO *atual = B->LPessoas->Inicio;
+    while (atual) {
+        PESSOA *pes = atual->Info;
+        DATA *dat = pes->NASCIMENTO;
+        fprintf(F_Pes, "%d\t%s\t%d-%d-%d\t%d\n", pes->ID, pes->NOME, dat->DIA, dat->MES, dat->ANO, pes->ID_FREGUESIA);
+        atual = atual->Prox;
+    }
+
+    fclose(F_Pes);
 }
-char *ApelidoMaisComum(BIBLIOTECA *B)
-{
-    FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
-    time_t now = time(NULL) ;
-    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
 
-    // Aqui o teu codigo
 
-    fclose(F_Logs);
-    return NULL;
+void ExportLivro(BIBLIOTECA *B) {
+    FILE *F_Pes = fopen("Livros.txt", "w+");
+    if (!F_Pes) return;
+
+    NO_CHAVE *atual = B->HLivros->LChaves->Inicio;
+
+    while (atual) {
+        NO *dados = atual->DADOS->Inicio;
+        while(dados){
+            LIVRO *livro = dados->Info;
+            fprintf(F_Pes, "%d\t%s\t%s\t%s\t%d\n", livro->ISBN,livro->TITULO,livro->AUTOR,livro->AREA,livro->ANO_PLUBLICACAO);
+            dados=dados->Prox;
+        }
+        atual=atual->Prox;
+    }
+
+    fclose(F_Pes);
 }
-char *AreaMaisComum(BIBLIOTECA *B)
-{
-    FILE *F_Logs = fopen(B->FICHEIRO_LOGS, "a");
-    time_t now = time(NULL) ;
-    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
 
-    // Aqui o teu codigo
 
+void InserirLog(char *_file,char *_string){
+    FILE *F_Logs = fopen(_file, "a");
+    fprintf(F_Logs, _string);
     fclose(F_Logs);
-    return NULL;
+
+    free(F_Logs);
 }

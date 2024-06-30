@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Data.h"
-#include "Lista.h"
-#include "Hashing.h"
+#include "Uteis.h"
+#include "Pessoa.h"
+#include "Livro.h"
+#include "Requisicao.h"
 #include "Biblioteca.h"
-#include "Pessoa.h"
 
-#include "Pessoa.h"
 
 extern int LerInteiro(char *txt);
 //-----------------------------------------
@@ -49,8 +48,9 @@ int main()
 {
     //inicia bliblioteca
     BIBLIOTECA *B = CriarBiblioteca("BSoft","log.txt");
+    LoadFicheiroBiblioteca(B);
 
-    int OP, RPessoa,RLivro;
+    int OP, RPessoa,RLivro,RRequisicao;
     do
     {
         setbuf (stdin, 0);
@@ -72,7 +72,12 @@ int main()
                 };
                 break;
 
-            case 3: system("pause"); break;
+            case 3:
+                RRequisicao=PainelRequisicao(B);
+                if(RRequisicao==9){
+                    OP=0;
+                };
+                break;
 
 
             case 0: break;
@@ -91,6 +96,9 @@ int main()
         }
 
     }while (OP != 0);
+
+    ExportPessoas(B);
+    ExportLivro(B);
 
     DestruirLista(B->LPessoas,B->FICHEIRO_LOGS);
 

@@ -1,167 +1,109 @@
 # depslib dependency file v1.0
-1712825557 source:c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\lista.c
-	"Lista.h"
+1719757349 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\data.c
+	"Data.h"
 
-1712825508 c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\lista.h
-	<stdio.h>
-	<stdlib.h>
-	"Pessoa.h"
-
-1712767571 c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\pessoa.h
+1719743835 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\data.h
+	<time.h>
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1712837605 source:c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\main.c
+1719755828 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\lista.c
+	"Lista.h"
+
+1719743835 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\lista.h
+	<time.h>
 	<stdio.h>
 	<stdlib.h>
-	"Lista.h"
+
+1719747212 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\locais.c
+	"Locais.h"
+
+1719743835 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\locais.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1719709753 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\uteis.c
+	"Uteis.h"
+
+1719762897 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\biblioteca.c
+	"Pessoa.h"
+	"Data.h"
+	"Locais.h"
+	"Biblioteca.h"
+	"Livro.h"
+
+1719741213 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\biblioteca.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
 	"Hashing.h"
+	"Lista.h"
+
+1719707396 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"Lista.h"
+
+1719744277 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"Biblioteca.h"
+	"Data.h"
+	"Lista.h"
+	"Uteis.h"
+
+1719743835 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"Pessoa.h"
+	"Livro.h"
+
+1719743835 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"Uteis.h"
 	"Biblioteca.h"
 
-1712824956 source:c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\pessoa.c
-	"Pessoa.h"
-
-1708605683 source:c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\uteis.c
+1719709787 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\uteis.h
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<time.h>
+	<ctype.h>
 
-1712767477 source:c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\hashing.c
-	"Hashing.h"
-
-1712767899 c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\hashing.h
+1719762730 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\main.c
 	<stdio.h>
 	<stdlib.h>
-	<string.h>
-	"Lista.h"
-
-1712841368 source:c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\biblioteca.c
-	"Biblioteca.h"
-
-1712830252 source:c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\livro.c
+	"Uteis.h"
+	"Pessoa.h"
 	"Livro.h"
-
-1712830714 c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\livro.h
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-
-1712840923 c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\biblioteca.h
-	<stdio.h>
-	<stdlib.h>
-	<time.h>
-	"Livro.h"
-	"Lista.h"
-	"Hashing.h"
-
-1712837605 source:c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\requisicao.c
 	"Requisicao.h"
-
-1712837605 c:\users\fmorgado\onedrive\ambiente de trabalho\projecto_ed_23_24\requisicao.h
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	"Pessoa.h"
-	"Livro.h"
-
-1719508666 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\biblioteca.c
 	"Biblioteca.h"
 
-1719313376 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\biblioteca.h
-	<stdio.h>
-	<stdlib.h>
-	<time.h>
-	"Livro.h"
-	"Lista.h"
-	"Hashing.h"
-	"Pessoa.h"
-
-1718024883 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.h
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
+1719759295 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.c
 	"Hashing.h"
 
-1719504505 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\lista.h
-	<stdio.h>
-	<stdlib.h>
-
-1719508128 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.h
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	<time.h>
-	"Data.h"
-
-1719504475 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.h
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	"Lista.h"
-
-1719509504 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.c
-	"Hashing.h"
-	<time.h>
-
-1719508098 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\lista.c
-	"Lista.h"
-
-1719510933 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.c
-	"Livro.h"
-	"Hashing.h"
-	"Biblioteca.h"
-
-1719503599 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\main.c
-	<stdio.h>
-	<stdlib.h>
-	"Data.h"
-	"Lista.h"
-	"Hashing.h"
-	"Biblioteca.h"
-	"Pessoa.h"
-	"Pessoa.h"
-
-1719507723 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.c
-	<stdio.h>
-	<stdlib.h>
-	"Lista.h"
-	"Hashing.h"
-	"Biblioteca.h"
-	"Data.h"
-
-1719316670 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.c
+1719755081 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.c
 	"Requisicao.h"
-
-1714500441 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.h
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	"Pessoa.h"
 	"Livro.h"
 
-1718024213 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\uteis.c
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-	<time.h>
+1719760360 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.c
+	"Livro.h"
 
-1718024883 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\data.h
+1719755716 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.c
 	<stdio.h>
 	<stdlib.h>
-	<string.h>
-
-1719508303 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\data.c
-	<stdio.h>
-	<stdlib.h>
-	"Lista.h"
-	"Hashing.h"
-	"Biblioteca.h"
-
-1718024213 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\uteis.c
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-	<time.h>
+	"Pessoa.h"
+	"Requisicao.h"
 

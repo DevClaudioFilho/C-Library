@@ -7,6 +7,7 @@
  * \date 10/04/2024
  * \author Docentes de ED
  */
+
 LISTA *CriarLista()
 {
     LISTA *L = (LISTA *)malloc(sizeof(LISTA));
@@ -30,24 +31,26 @@ void AddLista(LISTA *L, void *X,char *log_file)
 
     fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
     fclose(F_Logs);
-}
-
-void ShowLista(LISTA *L, void (*f)(void *),char *log_file)
+};
+void ShowLista(LISTA *L, void (*f)(void *,void *),char *log_file)
 {
     FILE *F_Logs = fopen(log_file, "a");
     time_t now = time(NULL) ;
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
 
     if (!L) return;
     if (!L->Inicio) return;
     NO *P = L->Inicio;
     while (P)
     {
-        f(P->Info);
+        f(P->Info,log_file);
         P = P->Prox;
     }
 
-    fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
+    F_Logs = fopen(log_file, "a");
+    now = time(NULL) ;
+    fprintf(F_Logs, "Terminou em %s na data %s\n", __FUNCTION__, ctime(&now));
     fclose(F_Logs);
 }
 
@@ -146,15 +149,18 @@ int SizeLista(LISTA *L,char *log_file)
     return L->NEL;
 }
 
+
 void bubbleSort(LISTA *lista,int (*f)(void *,void *,void *),int sw,char *log_file)
 {
     FILE *F_Logs = fopen(log_file, "a");
     time_t now = time(NULL) ;
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
 
     int i, j;
     NO *atual;
     NO *proximo;
+
 
     for (i = 0; i < lista->NEL - 1; i++)
     {
@@ -168,12 +174,14 @@ void bubbleSort(LISTA *lista,int (*f)(void *,void *,void *),int sw,char *log_fil
                 atual->Info = proximo->Info;
                 proximo->Info = temp;
             }
-
             atual = atual->Prox;
             proximo = proximo->Prox;
         }
     }
 
+    F_Logs = fopen(log_file, "a");
+    now = time(NULL) ;
     fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
     fclose(F_Logs);
+    return;
 }

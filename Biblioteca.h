@@ -5,10 +5,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "Livro.h"
-#include "Lista.h"
 #include "Hashing.h"
-#include "Pessoa.h"
+#include "Lista.h"
+
 
 typedef struct
 {
@@ -17,18 +16,19 @@ typedef struct
 
     HASHING *HLivros;
     LISTA   *LPessoas;
-   // LISTA_Requisicoes *LRequisicoes;
+    LISTA   *LRequisicoes;
+    LISTA   *LDistritos;
+    LISTA   *LConcelhos;
+    LISTA   *LFreguesias;
 }BIBLIOTECA;
 
 BIBLIOTECA *CriarBiblioteca(char *_nome, char *_logs);
 void ShowBiblioteca(BIBLIOTECA *B);
 void DestruirBiblioteca(BIBLIOTECA *B);
+void ImportPessoas(BIBLIOTECA *B);
+void ImportConselhos(BIBLIOTECA *B);
+void ImportDistritos(BIBLIOTECA *B);
 int LoadFicheiroBiblioteca(BIBLIOTECA *B);
-int AddLivroBiblioteca(BIBLIOTECA *B, LIVRO *L);
-int RemoverLivroBiblioteca(BIBLIOTECA *B, int isbn);
-LIVRO *LivroMaisRequisitadoBiblioteca(BIBLIOTECA *B);
-char *ApelidoMaisComum(BIBLIOTECA *B);
-char *AreaMaisComum(BIBLIOTECA *B);
-int AddRequisitante(BIBLIOTECA *B, void *X);
-PESSOA *PesquisarRequisitante(BIBLIOTECA *B, int cod);
+
+
 #endif // BIBLIOTECA_H_INCLUDED

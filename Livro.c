@@ -1,6 +1,4 @@
 #include "Livro.h"
-#include "Hashing.h"
-#include "Biblioteca.h"
 
 int MenuLivro()
 {
@@ -14,6 +12,7 @@ int MenuLivro()
     printf("\n | [2] Remover Livro                                              |");
     printf("\n | [3] Listar Livros                                              |");
     printf("\n | [4] Achar Livro                                                |");
+    printf("\n | [5] Livro mais recente                                         |");
     printf("\n |                                                                |");
     printf("\n |----------------------------------------------------------------|");
     printf("\n | [0] Sair                                                       |");
@@ -66,11 +65,8 @@ char PainelLivro(BIBLIOTECA *BLivro){
                 scanf("%d",&l_publicacao);
 
 
-
-                LIVRO *novoLivro = CriarLivro(l_isbn,l_titulo,l_autor,l_area,l_publicacao);
-                printf("/n %s /n",l_area);
-                printf("/n %s /n",novoLivro->AREA);
-                AddHashing(H_LIVRO,novoLivro,novoLivro->AREA,"char",file_log);
+                LIVRO *novoLivro = CriarLivro(l_isbn,l_titulo,l_autor,l_area,l_publicacao,file_log);
+                if(novoLivro) AddHashing(H_LIVRO,novoLivro,novoLivro->AREA,"char",file_log);
 
                 system("pause");
                 setbuf (stdin, 0);
@@ -83,7 +79,7 @@ char PainelLivro(BIBLIOTECA *BLivro){
                 printf("Digite o ISBN que quer pesquisar: ");
                 scanf("%d",&SLivro);
 
-                LIVRO *LIV = PesquisarHashing(H_LIVRO, PesquisarLivro,SLivro);
+                LIVRO *LIV = PesquisarHashing(H_LIVRO, PesquisarLivro,SLivro,file_log);
 
                 RemoverLista(H_LIVRO->LChaves->Inicio->DADOS,LIV,file_log);
                 system("pause");
@@ -102,10 +98,10 @@ char PainelLivro(BIBLIOTECA *BLivro){
                 printf("Digite o ISBN que quer pesquisar: ");
                 scanf("%d",&SLivro);
 
-                LIVRO *LIV = PesquisarHashing(H_LIVRO, PesquisarLivro,SLivro);
+                LIVRO *LIV = PesquisarHashing(H_LIVRO, PesquisarLivro,SLivro,file_log);
 
                 if (LIV)
-                    MostrarLivro(LIV);
+                    MostrarLivro(LIV,file_log);
                 else
                     printf("Nao existe essa pessoa\n");
                 system("pause");
@@ -113,7 +109,7 @@ char PainelLivro(BIBLIOTECA *BLivro){
             }
 
             case 5: {
-                LivroMaisRecente(H_LIVRO);
+                LivroMaisRecente(H_LIVRO,file_log);
                 system("pause");
                 break;
             }
@@ -137,7 +133,7 @@ char PainelLivro(BIBLIOTECA *BLivro){
     return OPLivro;
 }
 
-LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area, int _ano_pub )
+LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area, int _ano_pub,char *log_file )
 {
     LIVRO *P = (LIVRO *)malloc(sizeof(LIVRO));
     P->ISBN = _isbn;
@@ -152,23 +148,20 @@ LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area, int _ano_p
     return P;
 }
 
-void MostrarLivro(LIVRO *P)
+void MostrarLivro(LIVRO *P,char *log_file)
 {
     printf("\tLIVRO: %d [%s] [%s] [%s] [%d]\n", P->ISBN, P->TITULO,P->AUTOR,P->AREA ,P->ANO_PLUBLICACAO);
 }
 
-void DestruirLivro(LIVRO *P)
+void DestruirLivro(LIVRO *P,char *log_file)
 {
     free (P->TITULO);
     free (P->AUTOR);
     free (P);
 }
 
-int PesquisarLivro(LIVRO *L, int _isbn )
+int PesquisarLivro(LIVRO *L, int _isbn,char *log_file )
 {
-    printf("%d/n",L->ISBN);
-    printf("%d/n",_isbn);
-
     if(L->ISBN == _isbn)
     {
         return 1;
@@ -178,43 +171,38 @@ int PesquisarLivro(LIVRO *L, int _isbn )
         return 0;
 }
 
-
 void LivroMaisRecente(HASHING *H,char *file_log){
-    int i;
-    LISTA *LivrosMaisRecentes = CriarLista();
-    LivrosMaisRecentes->NEL=0;
+    if(!H) return;
+    if(!H->LChaves)return;
+    if(!H->LChaves->Inicio)return;
 
-    NO_CHAVE *noc_atual=H->LChaves->Inicio;
+    NO_CHAVE *chave=H->LChaves->Inicio;
 
-    for(i=0;i<H->LChaves->NEL;i++){
-        NO_CHAVE *noc_temp=noc_atual;
-        NO_CHAVE *noc_prox=noc_atual->Prox;
+    LIVRO *LivroMaisRecentes;
+    int ano_livro_recente;
 
-        NO *no_atual=noc_atual->DADOS->Inicio;
-        for(i=0;i<=noc_atual->DADOS->NEL;i++){
-            NO *no_temp=no_atual;
+    while(chave){
+        NO *no_livro= chave->DADOS->Inicio;
 
-            LIVRO *LIVRO_TEMP=no_atual->Info;
-            LIVRO *LIVRO_MAIS_TEMP=LivrosMaisRecentes->Inicio->Info;
-            if(LivrosMaisRecentes->NEL==0){
-                AddLista(LivrosMaisRecentes,no_atual->Info,file_log);
+        while(no_livro){
+            LIVRO *livro= no_livro->Info;
+
+            if(ano_livro_recente){
+                ano_livro_recente=livro->ANO_PLUBLICACAO;
+                break;
             }
-            else if(LIVRO_TEMP->ANO_PLUBLICACAO == LIVRO_MAIS_TEMP->ANO_PLUBLICACAO){
-                AddLista(LivrosMaisRecentes,no_atual->Info,file_log);
-            }
-            else if(LIVRO_TEMP->ANO_PLUBLICACAO > LIVRO_MAIS_TEMP->ANO_PLUBLICACAO){
-                int i;
-                LIVRO *LMA=LivrosMaisRecentes->Inicio->Info;
-                for(i=0;i<=LivrosMaisRecentes->NEL;i++){
-                    RemoverLista(LivrosMaisRecentes, LMA,file_log);
-                    LMA=LivrosMaisRecentes->Inicio->Prox;
+            else{
+                if(ano_livro_recente<livro->ANO_PLUBLICACAO){
+                    ano_livro_recente=livro->ANO_PLUBLICACAO;
+                    LivroMaisRecentes=livro;
                 }
-
-                AddLista(LivrosMaisRecentes,no_atual->Info,file_log);
             }
+
+            no_livro=no_livro->Prox;
         }
+
+        chave=chave->Prox;
     }
 
-    ShowLista(LivrosMaisRecentes,MostrarLivro,file_log);
-
+    MostrarLivro(LivroMaisRecentes,file_log);
 }

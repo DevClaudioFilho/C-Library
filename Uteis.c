@@ -1,8 +1,4 @@
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>//necessário p/ função time()
+#include "Uteis.h"
 
 int Aleatorio(int min, int max)
 {
@@ -32,6 +28,15 @@ int LerInteiro(char *txt)
         const char* OS = "Unknown";
     #endif
 #endif
+
+void converterParaMaiusculas(char *str)
+{
+    while (*str)
+    {
+        *str = toupper(*str);
+        str++;
+    }
+}
 
 void limparTerminal() {
     if (OS == "Windows") {

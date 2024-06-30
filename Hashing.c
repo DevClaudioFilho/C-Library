@@ -1,6 +1,4 @@
-
 #include "Hashing.h"
-#include <time.h>
 
 LISTA_CHAVES *CriarListaCHAVES()
 {
@@ -61,15 +59,12 @@ void AddHashing(HASHING *H, void *P,void *NChave, char *type,char *log_file)
 
     if (!H) return;
     if (!H->LChaves) return;
-
     NO_CHAVE *Key_colocar = FuncaoHashing(H, P ,NChave,type,log_file);
     if (!Key_colocar)
     {
         Key_colocar = AddCHAVE(H->LChaves, NChave,type);
     }
     AddLista(Key_colocar->DADOS, P,log_file);
-
-
 
     fprintf(F_Logs, "Terminou %s na data %s\n", __FUNCTION__, ctime(&now));
     fclose(F_Logs);
@@ -135,14 +130,14 @@ void ShowHashing(HASHING *H,void (*f)(void *),char *type,char *log_file)
     fclose(F_Logs);
 }
 
-void *PesquisarHashing(HASHING *H,void (*f)(void *),void *word,char *log_file)
+void *PesquisarHashing(HASHING *H,void (*f)(void *,void *,void *),void *word,char *log_file)
 {
     FILE *F_Logs = fopen(log_file, "a");
     time_t now = time(NULL) ;
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
 
-    if (!H) return;
-    if (!H->LChaves) return;
+    if (!H) return NULL;
+    if (!H->LChaves) return NULL;
     NO_CHAVE *L = H->LChaves->Inicio;
 
     void *T;
