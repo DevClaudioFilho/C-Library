@@ -191,6 +191,7 @@ char PainelPessoa(BIBLIOTECA *BPess){
                 printf("\t [1] Maior idade das pessoas\n");
                 printf("\t [2] Media das idades pessoas\n");
                 printf("\t [3] Verificar idades maiores que idade\n");
+                printf("\t [4] Verificar idades com mais pessoas\n");
                 scanf("%d",&PesLP);
 
                 if(getchar()!='\n' ){
@@ -222,6 +223,14 @@ char PainelPessoa(BIBLIOTECA *BPess){
                         scanf("%d",&idadeCopm);
                         int T= NumMaiorIdade(L_PESS,idadeCopm,file_log);
                         printf("Numeros de idades maior que %d: %d\n",idadeCopm,T);
+                        fflush(stdin);
+                        system("pause");
+                        fflush(stdin);
+                        break;
+                    }
+                    case 4:{
+                        int T=IdadeComMaisRequisitante(L_PESS,file_log);
+                        printf("Idades com mais pessoas: %d\n",T);
                         fflush(stdin);
                         system("pause");
                         fflush(stdin);
@@ -367,6 +376,7 @@ PESSOA *CriarPessoa(int _id, char *_nome, DATA *_nascimento, int _idfreguesia,ch
     P->ID_FREGUESIA = _idfreguesia;
     return P;
 }
+
 
 void MostrarPessoa(PESSOA *P,char *log_file)
 {
@@ -582,6 +592,49 @@ char *ApelidoMaisComum(LISTA *P, char *log_file) {
 
     fclose(F_Logs);
     return maisRepetido;
+}
+
+int IdadeComMaisRequisitante(LISTA *P, char *log_file) {
+    if (!P) return NULL;
+    if (!P->Inicio) return NULL;
+
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL);
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
+    NO *atual = P->Inicio;
+
+    int maisIdadeRepetida;
+    int maxRep = 0;
+    int tempRep = 0;
+
+    while (atual) {
+        NO *loopVerificar= P->Inicio;
+        PESSOA *Pes = atual->Info;
+
+        int idadeAtual = calcularIdade(Pes->NASCIMENTO->DIA,Pes->NASCIMENTO->MES,Pes->NASCIMENTO->ANO);
+
+        while (loopVerificar) {
+            PESSOA *PesVer = atual->Info;
+            int idadeVer = calcularIdade(PesVer->NASCIMENTO->DIA,PesVer->NASCIMENTO->MES,PesVer->NASCIMENTO->ANO);
+
+            if(idadeAtual==idadeVer){
+               tempRep++;
+            }
+
+            loopVerificar=loopVerificar->Prox;
+        }
+
+        if(tempRep>maxRep){
+            maxRep=tempRep;
+            maisIdadeRepetida=idadeAtual;
+        }
+
+        atual = atual->Prox;
+    }
+
+    fclose(F_Logs);
+    return maisIdadeRepetida;
 }
 
 int calcularIdade(int dia, int mes, int ano){

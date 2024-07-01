@@ -25,6 +25,8 @@ void MostrarLivro(LIVRO *P,char *log_file);
 void DestruirLivro(LIVRO *P,char *log_file);
 int PesquisarLivro(LIVRO *L, int _isbn,char *log_file );
 void LivroMaisRecente(HASHING *H,char *file_log);
+char *AreaComMaisLivros(HASHING *H,char *file_log);
+void RemoverLivrosSemReq(BLivro,file_log);
 
 
 #endif // LIVRO_H_INCLUDED

@@ -130,6 +130,7 @@ char PainelRequisicao(BIBLIOTECA *BRequisicao){
                 printf("\t [1] Maior idade das pessoas\n");
                 printf("\t [2] Media das idades pessoas\n");
                 printf("\t [3] Verificar idades maiores que idade\n");
+                printf("\t [4] Mostar requisicoes de uma determinada pessoa\n");
                 scanf("%d",&PesLP);
 
                 if(getchar()!='\n' ){
@@ -160,6 +161,15 @@ char PainelRequisicao(BIBLIOTECA *BRequisicao){
                         system("pause");
                         break;
                     }
+                    case 4:{
+                        int id;
+                        printf("Digite o id da pessoa que quer:");
+                        scanf("%d",&id);
+
+                        int T= MostarRequisicoesPessoa(BRequisicao,id,file_log);
+                        system("pause");
+                        break;
+                    }
 
                     default:
                         if(PesLP == -1){
@@ -174,6 +184,7 @@ char PainelRequisicao(BIBLIOTECA *BRequisicao){
 
                         break;
                 }
+                break;
             }
 
             case 8:{
@@ -210,6 +221,32 @@ char PainelRequisicao(BIBLIOTECA *BRequisicao){
     return OPRequisicao;
 }
 
+REQUISICAO *CriarRequisicaoImport(int _id, PESSOA *P, LIVRO *L,DATE DataE, DATE DataR,char *log_file)
+{
+    FILE *F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL) ;
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
+    time_t mytime = time(NULL);
+    struct tm *timeinfo = localtime(&mytime);
+
+    int Adia= timeinfo->tm_mday;
+    int Ames= timeinfo->tm_mon + 1;
+    int Aano= timeinfo->tm_year + 1900;
+
+    REQUISICAO *Req = (REQUISICAO *)malloc(sizeof(REQUISICAO));
+    Req->ID = _id;
+    Req->Ptr_Req = P;
+    Req->Ptr_Livro = L;
+    Req->Data_Requisicao= DataE;
+    if(!DataR)Req->Data_Devolucao=NULL;
+    else Req->Data_Devolucao=DataR;
+
+    fclose(F_Logs);
+    return Req;
+}
+
+
 
 REQUISICAO *CriarRequisicao(int _id, PESSOA *P, LIVRO *L,char *log_file)
 {
@@ -217,11 +254,19 @@ REQUISICAO *CriarRequisicao(int _id, PESSOA *P, LIVRO *L,char *log_file)
     time_t now = time(NULL) ;
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
 
+    time_t mytime = time(NULL);
+    struct tm *timeinfo = localtime(&mytime);
+
+    int Adia= timeinfo->tm_mday;
+    int Ames= timeinfo->tm_mon + 1;
+    int Aano= timeinfo->tm_year + 1900;
+
     REQUISICAO *Req = (REQUISICAO *)malloc(sizeof(REQUISICAO));
     Req->ID = _id;
     Req->Ptr_Req = P;
     Req->Ptr_Livro = L;
-    Req->Data_Requisicao= CriarData(10,10,10);
+    Req->Data_Requisicao= CriarData(Adia,Ames,Aano);
+    Req->Data_Devolucao=NULL;
 
     fclose(F_Logs);
     return Req;
@@ -236,13 +281,11 @@ void MostrarRequisicao(REQUISICAO *R,char *log_file)
     printf("REQ ID = %d\n", R->ID);
     MostrarPessoa(R->Ptr_Req,log_file);
     MostrarLivro(R->Ptr_Livro,log_file);
+    printf("\tData de retirada: ");
     MostrarData(R->Data_Requisicao);
-    printf("TESTE");
     if(R->Data_Devolucao!=NULL){
-            printf("TESTE2");
             MostrarData(R->Data_Devolucao);
     }
-    printf("TESTE3");
 
     fclose(F_Logs);
 }
@@ -271,6 +314,7 @@ int PesquisarRequisicao(REQUISICAO *L, int _id,char *log_file){
 }
 
 int PesquisarRequisicaoPessoa(REQUISICAO *L, int _id,char *log_file ){
+    if(!L->Ptr_Req)return 0;
     FILE *F_Logs = fopen(log_file, "a");
     time_t now = time(NULL) ;
     fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
@@ -288,6 +332,16 @@ int PesquisarRequisicaoPessoa(REQUISICAO *L, int _id,char *log_file ){
     }
 }
 
+int PesquisarRequisicaoLivro(REQUISICAO *L, int _isbn,char *log_file ){
+    if(L->Ptr_Livro->ISBN == _isbn) {
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+
 int PesquisarRequisicaoAtiva(REQUISICAO *L, int _id ){
     if(!L->Data_Devolucao) return 1;
     else return 0;
@@ -298,41 +352,6 @@ int PesquisarRequisicaoFechada(REQUISICAO *L, int _id ){
     else return 0;
 }
 
-LIVRO *LivroMaisRequisitadoBiblioteca(LISTA* LReq, char* log_file) {
-    if (!LReq->Inicio) return NULL;
-
-    FILE* F_Logs = fopen(log_file, "a");
-    time_t now = time(NULL);
-    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
-
-    int maxReq = 0;
-    REQUISICAO* MaisRequisitado = NULL;
-
-    NO* atual = LReq->Inicio;
-    while (atual) {
-        REQUISICAO* atualReq = atual->Info;
-        int tempReq = 0;
-
-        NO* prox = atual->Prox;
-        while (prox) {
-            REQUISICAO* proxReq = prox->Info;
-            if (proxReq->Ptr_Livro->ISBN == atualReq->Ptr_Livro->ISBN) {
-                tempReq++;
-            }
-            prox = prox->Prox;
-        }
-
-        if (tempReq > maxReq) {
-            MaisRequisitado = atualReq;
-        }
-
-        atual = atual->Prox;
-    }
-
-    fclose(F_Logs);
-    if(MaisRequisitado)return MaisRequisitado->Ptr_Livro;
-    else return NULL;
-}
 
 LIVRO* AreaMaisRequisitadoBiblioteca(LISTA* LReq, char* log_file) {
     if (!LReq->Inicio) return NULL;
@@ -414,6 +433,29 @@ char *AreaMaisComum(LISTA* LReq, char* log_file) {
     else return NULL;
 }
 
+void MostarRequisicoesPessoa(BIBLIOTECA *B, char* log_file){
+    if(!B->LPessoas->Inicio) return NULL;
+
+
+    printf("Resultados:\n");
+    NO *atualNo=B->LPessoas->Inicio;
+    while(atualNo){
+        PESSOA *atualPessoa = atualNo->Info;
+        if(B->LRequisicoes->Inicio){
+            REQUISICAO *REQ= PesquisarLista(B->LRequisicoes, PesquisarRequisicaoPessoa,atualPessoa->ID,B->FICHEIRO_LOGS);
+            if(REQ){
+                MostrarRequisicao(REQ,B->FICHEIRO_LOGS);
+            };
+
+        }
+        atualNo= atualNo->Prox;
+    }
+    return NULL;
+}
+
+
+
+
 void FinalizarRequisicao(REQUISICAO *R,char* log_file){
     time_t mytime = time(NULL);
     struct tm *timeinfo = localtime(&mytime);
@@ -425,6 +467,7 @@ void FinalizarRequisicao(REQUISICAO *R,char* log_file){
     if(ValidarData(Adia,Ames,Aano)!=1){
         InserirLog(log_file,"Ocorreu um erro ao finalizar Requisicao");
         printf("Ocorreu um erro ao finalizar Requisicao");
+        return NULL;
     }
 
     R->Data_Requisicao=CriarData(Adia,Ames,Aano);

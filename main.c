@@ -23,8 +23,6 @@ int Menu()
     printf("\n | [1] Menu de Requisitantes                                      |");// Requisitantes
     printf("\n | [2] Menu de Livros                                             |");// Livros
     printf("\n | [3] Menu de Emprestimos                                        |");// Requisi��es
-    printf("\n | [4] Listar Biblioteca                                          |");
-    printf("\n | [5] Load Biblioteca                                            |");
     printf("\n |                                                                |");
     printf("\n |----------------------------------------------------------------|");
     printf("\n | [0] Sair                                                       |");

@@ -93,6 +93,33 @@ void ImportPessoas(BIBLIOTECA *B) {
     fclose(F_Pes);
 }
 
+
+void ImportRequisicao(BIBLIOTECA *B) {
+    FILE *F_Pes = fopen("Requisicao.txt", "r");
+    if (!F_Pes) return;
+
+    char *file_log = B->FICHEIRO_LOGS;
+    char contents[2000];
+    int ID, ID_FREGUESIA, diaE, mesE, anoE, diaR, mesR, anoR;
+    char NOME[200];
+
+    while (fgets(contents, sizeof(contents), F_Pes) != NULL) {
+        sscanf(contents, "%d\t%[^\t]\t%d-%d-%d\t%d", &ID, NOME, &diaE, &mesE, &anoE,&diaR, &mesR, &anoR);
+
+        if (ValidarData(diaE, mesE, anoE) && ValidarData(diaR, mesR, anoR) ) {
+            DATA *DatE = CriarData(diaE, mesE, anoE);
+            DATA *DatR = CriarData(diaR, mesR, anoR);
+            REQUISICAO *novaPessoa = CriarRequisicaoImport(ID, NOME, Dat, ID_FREGUESIA, file_log);
+            if(novaPessoa){
+                AddLista(B->LPessoas, novaPessoa, file_log);
+            }
+        }
+    }
+
+    fclose(F_Pes);
+}
+
+
 void ImportLivro(BIBLIOTECA *B) {
     FILE *F_Pes = fopen("Livros.txt", "r");
     if (!F_Pes) return;

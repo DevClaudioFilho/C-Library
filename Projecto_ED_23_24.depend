@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1719757349 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\data.c
+1719864553 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\data.c
 	"Data.h"
 
 1719743835 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\data.h
@@ -59,7 +59,7 @@
 	"Lista.h"
 	"Uteis.h"
 
-1719743835 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.h
+1719838658 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -67,7 +67,7 @@
 	"Pessoa.h"
 	"Livro.h"
 
-1719743835 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.h
+1719838604 c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -94,14 +94,15 @@
 1719759295 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\hashing.c
 	"Hashing.h"
 
-1719755081 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.c
+1719864365 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\requisicao.c
 	"Requisicao.h"
 	"Livro.h"
 
-1719760360 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.c
+1719861894 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\livro.c
 	"Livro.h"
+	"Requisicao.h"
 
-1719755716 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.c
+1719829396 source:c:\users\devcl\onedrive\documentos\faculdade\ed\projeto\pessoa.c
 	<stdio.h>
 	<stdlib.h>
 	"Pessoa.h"

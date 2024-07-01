@@ -31,5 +31,8 @@ int PesquisarRequisicaoFechada(REQUISICAO *L, int _id );
 LIVRO *LivroMaisRequisitadoBiblioteca(LISTA* LReq, char* log_file);
 LIVRO* AreaMaisRequisitadoBiblioteca(LISTA* LReq, char* log_file);
 char *AreaMaisComum(LISTA* LReq, char* log_file);
+char *AreaComMaisLivros(HASHING *H,char *file_log);
+int PesquisarRequisicaoLivro(REQUISICAO *L, int _isbn,char *log_file );
+void FinalizarRequisicao(REQUISICAO *R,char* log_file);
 
 #endif // REQUISICAO_H_INCLUDED

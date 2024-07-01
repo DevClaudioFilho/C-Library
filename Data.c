@@ -40,6 +40,7 @@ DATA *CriarData(int _dia, int _mes, int _ano)
 
 void MostrarData(DATA *D)
 {
+    if(!D->DIA) return NULL;
     if(D->DIA<10 && D->MES<10){
         printf(" 0%d-0%d-%d\n", D->DIA, D->MES, D->ANO);
     }

@@ -1,4 +1,5 @@
 #include "Livro.h"
+#include "Requisicao.h"
 
 int MenuLivro()
 {
@@ -13,6 +14,9 @@ int MenuLivro()
     printf("\n | [3] Listar Livros                                              |");
     printf("\n | [4] Achar Livro                                                |");
     printf("\n | [5] Livro mais recente                                         |");
+    printf("\n | [6] Area  com mais Livros                                      |");
+    printf("\n | [7] Qual e o livro mais  requisitado                           |");
+    printf("\n | [8] Remover Livros sem requisicoes                             |");
     printf("\n |                                                                |");
     printf("\n |----------------------------------------------------------------|");
     printf("\n | [0] Sair                                                       |");
@@ -114,6 +118,28 @@ char PainelLivro(BIBLIOTECA *BLivro){
                 break;
             }
 
+            case 6:{
+                printf("A area com mais livros e : %s\n",AreaComMaisLivros(H_LIVRO,file_log));
+                system("pause");
+                break;
+            }
+
+            case 7:{
+                printf("O livro mais requisitado e:");
+                LIVRO *T=LivroMaisRequisitadoBiblioteca(BLivro->LRequisicoes,file_log);
+                MostrarLivro(T,file_log);
+                system("pause");
+                break;
+            }
+
+            case 8:{
+                RemoverLivrosSemReq(BLivro,file_log);
+                printf("Livros excluidos\n");
+                system("pause");
+                break;
+            }
+
+
             case 0: break;
             case 9: break;
 
@@ -205,4 +231,96 @@ void LivroMaisRecente(HASHING *H,char *file_log){
     }
 
     MostrarLivro(LivroMaisRecentes,file_log);
+}
+
+char *AreaComMaisLivros(HASHING *H,char *file_log){
+    if(!H) return NULL;
+    if(!H->LChaves)return NULL;
+    if(!H->LChaves->Inicio)return NULL;
+
+    NO_CHAVE *chaveAtual=H->LChaves->Inicio;
+
+    char *AreaComum=NULL;
+    int count=0;
+
+    while(chaveAtual){
+        int elementos=chaveAtual->DADOS->NEL;
+        if(elementos>count){
+            printf("%d\n",elementos);
+            count=elementos;
+            printf("%s",chaveAtual->KEY);
+            AreaComum=chaveAtual->KEY;
+        }
+
+        chaveAtual=chaveAtual->Prox;
+    }
+
+    return AreaComum;
+}
+
+LIVRO *LivroMaisRequisitadoBiblioteca(LISTA* LReq, char* log_file) {
+    if (!LReq->Inicio) return NULL;
+
+    FILE* F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL);
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+
+    int maxReq = 0;
+
+    NO* atual = LReq->Inicio;
+    REQUISICAO* MaisRequisitado = atual->Info;
+    while (atual) {
+        REQUISICAO* atualReq = atual->Info;
+        int tempReq = 0;
+
+        NO* prox = atual->Prox;
+        while (prox) {
+            REQUISICAO* proxReq = prox->Info;
+            if (proxReq->Ptr_Livro->ISBN == atualReq->Ptr_Livro->ISBN) {
+                tempReq++;
+            }
+            prox = prox->Prox;
+        }
+
+        if (tempReq > maxReq) {
+            MaisRequisitado = atualReq;
+        }
+
+        atual = atual->Prox;
+    }
+    if(MaisRequisitado)return MaisRequisitado->Ptr_Livro;
+    else return NULL;
+}
+
+void RemoverLivrosSemReq(BIBLIOTECA *B, char* log_file) {
+    if(!B->HLivros->LChaves->Inicio) return NULL;
+
+    FILE* F_Logs = fopen(log_file, "a");
+    time_t now = time(NULL);
+    fprintf(F_Logs, "Entrei em %s na data %s\n", __FUNCTION__, ctime(&now));
+    fclose(F_Logs);
+
+    NO_CHAVE* atualChave = B->HLivros->LChaves->Inicio;
+    while (atualChave) {
+        NO *atualNo=atualChave->DADOS->Inicio;
+        while(atualNo){
+            LIVRO *atualLivro = atualNo->Info;
+            if(B->LRequisicoes->Inicio){
+                LIVRO *LIV= PesquisarLista(B->LRequisicoes, PesquisarRequisicaoLivro,atualLivro->ISBN,log_file);
+                if(!LIV){
+                    RemoverLista(atualChave->DADOS,atualLivro,log_file);
+                    //Destroy
+                };
+
+            }
+            else{
+                RemoverLista(atualChave->DADOS,atualLivro,log_file);
+            }
+
+            atualNo= atualNo->Prox;
+        }
+
+        atualChave=atualChave->Prox;
+    }
+    return NULL;
 }
