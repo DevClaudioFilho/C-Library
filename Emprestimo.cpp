@@ -7,11 +7,11 @@ Emprestimo::Emprestimo(int novoId,Leitor* novoLeitor, Livro* novoLivro, tm novaD
     dataEmprestimo=novaDataEmprestimo;
     devolvido=false;
 
-    tm novDataDevolucao = dataEmprestimo;
-    novDataDevolucao.tm_mday += leitor->getPrazoMaximo();
-    mktime(&novDataDevolucao);
+    tm novDataLimite = dataEmprestimo;
+    novDataLimite.tm_mday += leitor->getPrazoMaximo();
+    mktime(&novDataLimite);
 
-    dataDevolucao= novDataDevolucao;
+    dataLimite= novDataLimite;
 }
 
 void Emprestimo::Show() {
@@ -19,8 +19,10 @@ void Emprestimo::Show() {
     cout<<"Livro= "<<livro->getId()<<"-"<<livro->getTitulo()<<endl;
     cout<<"Leitor= "<<leitor->getId()<<"-"<<leitor->getNome()<<endl;
     cout << "Data de Emprestimo: " << put_time(&dataEmprestimo, "%d-%m-%Y") << endl;
+    cout << "Data Limite: " << put_time(&dataLimite, "%d-%m-%Y") << endl;
     cout << "Data de Devolucao: " << put_time(&dataDevolucao, "%d-%m-%Y") << endl;
     cout << "Devolvido: " << devolvido << endl;
+    cout << "Multa: " << multa << endl;
 
     cout<<"\n"<<endl;
 };

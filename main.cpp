@@ -35,20 +35,10 @@ void exibirMenu() {
     cout << "| 9.  Realizar Emprestimo                         |\n";
     cout << "| 10. Exibir Emprestimos                          |\n";
     cout << "| 11. Exibir Emprestimo por Status                |\n";
+    cout << "| 12. Relatorio Emprestimo                        |\n";
+    cout << "| 13. Devolucao                                   |\n";
+    cout << "| 14. Prorrogar Devolucao                         |\n";
     cout << "___________________________________________________\n";
-    cout << "|                  NAO SEI                     |\n";
-    cout << "| 12. Devolucao                                   |\n";
-    cout << "| 5. Prorrogar Emprestimo                         |\n";
-    cout << "| 7. Exibir Relatorio de Multas Pendentes         |\n";
-    cout << "| 9. Exibir Todos os Leitores                     |\n";
-    cout << "| 10. Salvar Dados                                |\n";
-    cout << "| 11. Carregar Dados                              |\n";
-    cout << "| 12. Forcar Multa                                |\n";
-    cout << "| 13. Exibir Reservas                             |\n";
-    cout << "| 14. Editar Informacoes de Leitores              |\n";
-    cout << "| 15. Editar Informacoes de Livros                |\n";
-    cout << "| 16. Reservar Livro                              |\n";
-    cout << "| 17. Cancelar Reserva                            |\n";
     cout << "| 0. Sair                                         |\n";
     cout << "___________________________________________________\n";
     cout << "Escolha uma opcao: ";
@@ -131,6 +121,12 @@ int main() {
 
             case 12: {
                 biblioteca.relatorioEmprestimo();
+                system("pause");
+                break;
+            }
+
+            case 13: {
+                biblioteca.devolucao();
                 system("pause");
                 break;
             }

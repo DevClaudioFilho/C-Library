@@ -51,6 +51,7 @@ public:
     void exibirEmprestimoPorStatus();
     void devolucao();
     void relatorioEmprestimo();
+    void prorrogarEmprestimo();
 
 
     void registrarLeitor(Leitor* leitor);

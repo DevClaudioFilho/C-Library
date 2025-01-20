@@ -16,6 +16,9 @@ public:
     Emprestimo(int id,Leitor* leitor, Livro* livro, tm dataEmprestimo);
 
     void setDevolvido(bool statusDevolucao) { devolvido=statusDevolucao; }
+    void setDataDevolucao(tm data){ dataDevolucao=data; }
+    void setDataLimite(tm data){ dataLimite=data; }
+    void setMulta(double valor){ multa=valor; }
     void Show();
 
 
@@ -23,6 +26,7 @@ public:
     Leitor* getLeitor()  { return leitor; }
     Livro* getLivro()  { return livro; }
     tm getDataEmprestimo() { return dataEmprestimo; }
+    tm getDataLimite() { return dataLimite; }
     tm getDataDevolucao() { return dataEmprestimo; }
     bool getDevolvido() { return devolvido; }
 
@@ -31,8 +35,10 @@ private:
     Leitor* leitor;
     Livro* livro;
     tm dataEmprestimo;
+    tm dataLimite;
     tm dataDevolucao;
-    bool devolvido=0;
+    bool devolvido=false;
+    double multa=0;
 };
 
 #endif // EMPRESTIMO_H

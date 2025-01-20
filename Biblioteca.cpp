@@ -9,7 +9,6 @@ void Biblioteca::registrarLivro() {
     string titulo, autor;
 
     cout << "Digite o titulo: ";
-    cin.ignore();
     getline(cin, titulo);
 
     cout << "Digite o autor: ";
@@ -172,14 +171,12 @@ void Biblioteca::editarLivro() {
     livroEncontrado->Edit(); // Polimorfismo em ação
 }
 
-
 void Biblioteca::registrarLeitor() {
     int tipoLeitor;
     string nome;
     int idade;
 
     cout << "Digite o nome do leitor: ";
-    cin.ignore();
     getline(cin, nome);
 
     cout << "Digite a idade do leitor: ";
@@ -235,8 +232,6 @@ void Biblioteca::exibirLeitor() {
     cout << "Total de Leitores: " << LLeitor.size() << "\n";
 }
 
-
-
 void Biblioteca::exibirLeitorPorTipo() {
     int tipoLeitor;
     cout << "Selecione o tipo de leitor que deseja listar:\n";
@@ -275,7 +270,6 @@ void Biblioteca::exibirLeitorPorTipo() {
         cout << "Total de leitor encontrado do tipo " << tipoLeitor <<": "<< countLeitores  << endl;
     }
 }
-
 
 void Biblioteca::editarLeitor() {
     int idLeitor;
@@ -405,15 +399,13 @@ void Biblioteca::relatorioEmprestimo() {
         Leitor *LE = (*it)->getLeitor();
         int idLivroTipo = L->getIdTipo();
         int idLeitorTipo = LE->getIdTipo();
-
-        cout << "Debug: Livro Tipo=" << idLivroTipo << ", Leitor Tipo=" << idLeitorTipo << endl;
-
         contagemEmprestimosTLivro[idLivroTipo]++;
         contagemEmprestimosTLivroLeitor[idLivroTipo][idLeitorTipo]++;
     }
 
     cout << "Relatorio de Emprestimos por Tipo de Livro:" << endl;
     for (auto& livroEntry : contagemEmprestimosTLivro) {
+        cout << "-------------------------------------------------\n";
         int tipoLivro = livroEntry.first;
         int totalEmprestimos = livroEntry.second;
 
@@ -449,32 +441,67 @@ void Biblioteca::devolucao() {
     Emprestimo* emprestimoEncontrado;
 
     for (Emprestimo* emprestimo : LEmprestimo) {
-        if (emprestimo->getLivro()->getId() == idLivro && !emprestimo->isDevolvido()) {
+        if (emprestimo->getLivro()->getId() == idLivro && !emprestimo->getDevolvido()) {
             emprestimoEncontrado = emprestimo;
             break;
         }
     }
 
     if (!emprestimoEncontrado) {
-        cout << "Nenhum empréstimo ativo encontrado para este livro.\n";
+        cout << "Nenhum emprestimo ativo encontrado para este livro.\n";
         return;
     }
 
-    // Marcar como devolvido
-    emprestimoEncontrado->setDevolvido(true);
-    cout << "Devolução registrada com sucesso!\n";
 
-    // Calcular multa (se aplicável)
+
     tm dataAtual = Uteis::obterDataAtual();
-    if (difftime(mktime(&dataAtual), mktime(&emprestimoEncontrado->getDataDevolucao())) > 0) {
+    tm dataLimite = emprestimoEncontrado->getDataLimite();
+
+    emprestimoEncontrado->setDevolvido(true);
+    emprestimoEncontrado->setDataDevolucao(dataAtual);
+    cout << "Devolucao registrada com sucesso!\n";
+    if (difftime(mktime(&dataAtual), mktime(&dataLimite)) > 0) {
         Leitor* leitor = emprestimoEncontrado->getLeitor();
-        double multa = leitor->calcularMulta(difftime(mktime(&dataAtual), mktime(&emprestimoEncontrado->getDataDevolucao())));
+        int atraso = difftime(mktime(&dataAtual), mktime(&dataLimite));
+        double multa = leitor->getTaxaMulta() * atraso;
+        emprestimoEncontrado->setMulta(multa);
         cout << "Multa aplicada: " << multa << " euros.\n";
     } else {
         cout << "Nenhuma multa aplicada.\n";
     }
 }
 
+
+void Biblioteca::prorrogarEmprestimo() {
+
+    int idLivro,dias;
+    cout << "Digite o ID do livro: ";
+    cin >> idLivro;
+
+    cout << "Digite o tempo que quer prorrogar: ";
+    cin >> dias;
+
+
+    Emprestimo* emprestimoEncontrado;
+
+    for (Emprestimo* emprestimo : LEmprestimo) {
+        if (emprestimo->getLivro()->getId() == idLivro && !emprestimo->getDevolvido()) {
+            emprestimoEncontrado = emprestimo;
+            break;
+        }
+    }
+
+    if (!emprestimoEncontrado) {
+        cout << "Nenhum emprestimo ativo encontrado para este livro.\n";
+        return;
+    }
+
+    tm newDate = emprestimoEncontrado->getDataLimite();
+    newDate.tm_mday += dias;
+
+    emprestimoEncontrado->setDataLimite(newDate);
+    cout << "Foi adicionado " << dias << "dias a data limite." <<endl;
+}
 
 Biblioteca::~Biblioteca() {
     for (Livro* livro : LLivro) delete livro;

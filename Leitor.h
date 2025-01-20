@@ -18,6 +18,7 @@ class Leitor {
         virtual void Show()=0;
         virtual int getPrazoMaximo()=0;
         virtual int getIdTipo() = 0;
+        virtual double getTaxaMulta() =0;
 
 
         int getId(){ return id;}
