@@ -1,16 +1,35 @@
-#ifndef UTEIS_H_INCLUDED
-#define UTEIS_H_INCLUDED
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
-#include <ctype.h>
+#ifndef UTEIS_H
+#define UTEIS_H
 
-int Aleatorio(int min, int max);
-int Factorial(int N);
-int LerInteiro(char *txt);
-void converterParaMaiusculas(char *str);
-void limparTerminal();
+#include <iostream>
+#include <string>
+#include <list>
+#include <vector>
+#include <chrono>
+#include <ctime>
 
-#endif // UTEIS_H_INCLUDED
+using namespace std;
+
+class Uteis
+{
+public:
+    static void limparTela();
+
+    static bool ImparOuPar(int x);
+    static int AleatorioEntre(int a, int b);
+    static vector <int> AleatorioDiferentes(int a);
+    static bool chance50Porcento();
+    static int Eixoy(int q){
+        return q/4;
+    }
+    static int Eixox(int q){
+        return q%4;
+    }
+    //static bool Verificar(int a, int b);
+    static int MaiorElementoVector(vector<int>& VectorAAnalisar);
+    tm criarData(int dia, int mes, int ano);
+    static tm obterDataAtual();
+};
+
+#endif //UTEIS_H

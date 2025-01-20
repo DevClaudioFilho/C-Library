@@ -1,32 +1,60 @@
-#ifndef LIVRO_H_INCLUDED
-#define LIVRO_H_INCLUDED
+#ifndef LIVRO_H
+#define LIVRO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+#include <string>
+#include <iostream>
 
-#include "Uteis.h"
-#include "Biblioteca.h"
+using namespace std;
 
+/**
+ * @class Livro
+ * @brief Classe base abstrata para diferentes tipos de livros.
+ */
 
-typedef struct
-{
-    int ISBN;
-    char *TITULO;
-    char *AUTOR;
-    char *AREA;
-    int ANO_PLUBLICACAO;
-}LIVRO;
+class Livro {
+ public:
+  // Construtor
+  Livro(int id,string titulo, string autor);
 
-int MenuLivro();
-LIVRO *CriarLivro(int _isbn, char *_titulo, char *_autor,char *_area, int _ano_pub,char *log_file );
-void MostrarLivro(LIVRO *P,char *log_file);
-void DestruirLivro(LIVRO *P,char *log_file);
-int PesquisarLivro(LIVRO *L, int _isbn,char *log_file );
-void LivroMaisRecente(HASHING *H,char *file_log);
-char *AreaComMaisLivros(HASHING *H,char *file_log);
-void RemoverLivrosSemReq(BLivro,file_log);
+  // Destruidor virtual para suporte a herança
+  virtual ~Livro();
+
+  // Metodos virtuais
+  virtual void Show() = 0;
+  virtual void Edit() = 0;
+  virtual int getIdTipo() = 0;
 
 
-#endif // LIVRO_H_INCLUDED
+  // Métodos de acesso
+
+  string getTitulo(){ return titulo; }
+  string getAutor() { return autor; }
+  int getId() { return id; }
+
+  // Métodos de modificação
+  void setTitulo(string novoTitulo) {
+   titulo = novoTitulo;
+  }
+
+  void setAutor(string novoAutor) {
+   autor = novoAutor;
+  }
+
+  void setID(int novoId) {
+    id = novoId;
+  }
+
+  void setIdTipo(int novoIdTipo) {
+    idTipo = novoIdTipo;
+   }
+
+
+
+ protected:
+  int id;
+  string titulo;
+  string autor;
+  int idTipo;
+};
+
+#endif // LIVRO_H
